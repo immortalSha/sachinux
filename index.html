@@ -1,0 +1,987 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sachin Kumar M — UX Designer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #060608;
+  --bg2: #0d0d10;
+  --bg3: #13131a;
+  --border: rgba(255,255,255,0.07);
+  --border-active: rgba(197,241,53,0.4);
+  --lime: #C5F135;
+  --lime-dim: rgba(197,241,53,0.12);
+  --lime-glow: rgba(197,241,53,0.05);
+  --text: #f0f0f0;
+  --text-muted: #666;
+  --text-dim: #999;
+  --radius: 16px;
+  --font-display: 'Syne', sans-serif;
+  --font-body: 'DM Sans', sans-serif;
+  --font-mono: 'Space Mono', monospace;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-weight: 400;
+  line-height: 1.6;
+  overflow-x: hidden;
+  cursor: none;
+}
+
+/* Custom cursor */
+#cursor {
+  position: fixed; width: 10px; height: 10px;
+  background: var(--lime); border-radius: 50%;
+  pointer-events: none; z-index: 9999;
+  transform: translate(-50%,-50%);
+  transition: transform 0.1s, width 0.2s, height 0.2s, opacity 0.2s;
+  mix-blend-mode: difference;
+}
+#cursor-trail {
+  position: fixed; width: 30px; height: 30px;
+  border: 1px solid rgba(197,241,53,0.4); border-radius: 50%;
+  pointer-events: none; z-index: 9998;
+  transform: translate(-50%,-50%);
+  transition: all 0.15s ease;
+}
+body:hover #cursor { opacity: 1; }
+
+/* Noise overlay */
+body::before {
+  content:''; position:fixed; inset:0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events:none; z-index:0; opacity:0.4;
+}
+
+/* NAV */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 20px 48px;
+  background: rgba(6,6,8,0.85);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+}
+.nav-logo {
+  font-family: var(--font-display); font-weight: 800; font-size: 18px;
+  color: var(--text); letter-spacing: -0.5px;
+}
+.nav-logo span { color: var(--lime); }
+.nav-links { display: flex; gap: 32px; align-items: center; }
+.nav-links a {
+  font-size: 13px; color: var(--text-muted); text-decoration: none;
+  letter-spacing: 0.05em; transition: color 0.2s;
+  font-family: var(--font-mono);
+}
+.nav-links a:hover { color: var(--lime); }
+.nav-cta {
+  background: var(--lime); color: #060608 !important;
+  padding: 8px 20px; border-radius: 100px;
+  font-family: var(--font-display) !important; font-weight: 700 !important;
+  font-size: 13px !important; letter-spacing: 0 !important;
+  transition: transform 0.2s, box-shadow 0.2s !important;
+}
+.nav-cta:hover { transform: translateY(-1px); box-shadow: 0 8px 24px rgba(197,241,53,0.3) !important; color: #060608 !important; }
+
+/* SECTIONS */
+section { position: relative; z-index: 1; }
+
+/* HERO */
+#hero {
+  min-height: 100vh;
+  display: grid; grid-template-columns: 1fr 1fr;
+  align-items: center;
+  padding: 120px 48px 80px;
+  gap: 48px;
+  overflow: hidden;
+}
+.hero-bg-glow {
+  position: absolute; width: 600px; height: 600px;
+  border-radius: 50%; background: radial-gradient(circle, rgba(197,241,53,0.06) 0%, transparent 70%);
+  top: -100px; right: -100px; pointer-events: none;
+}
+.hero-bg-grid {
+  position: absolute; inset: 0;
+  background-image: linear-gradient(rgba(197,241,53,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(197,241,53,0.03) 1px, transparent 1px);
+  background-size: 64px 64px;
+  pointer-events: none;
+}
+.hero-left { position: relative; z-index: 2; }
+.hero-tag {
+  display: inline-flex; align-items: center; gap: 8px;
+  border: 1px solid var(--border-active);
+  background: var(--lime-dim); border-radius: 100px;
+  padding: 6px 16px; margin-bottom: 28px;
+}
+.hero-tag-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--lime); animation: pulse 2s infinite; }
+@keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(0.8)} }
+.hero-tag span { font-size: 12px; color: var(--lime); font-family: var(--font-mono); }
+.hero-h1 {
+  font-family: var(--font-display); font-size: clamp(42px, 5vw, 72px);
+  font-weight: 800; line-height: 1.0; letter-spacing: -2px;
+  margin-bottom: 20px;
+}
+.hero-h1 .name { color: var(--lime); }
+.hero-sub {
+  font-size: clamp(16px, 1.8vw, 20px); color: var(--text-dim);
+  max-width: 440px; line-height: 1.6; font-weight: 300;
+  margin-bottom: 12px;
+}
+.hero-tagline {
+  font-family: var(--font-mono); font-size: 13px; color: var(--text-muted);
+  border-left: 2px solid var(--lime); padding-left: 14px;
+  margin-bottom: 40px;
+}
+.hero-btns { display: flex; gap: 12px; flex-wrap: wrap; }
+.btn-primary {
+  background: var(--lime); color: #060608;
+  padding: 14px 28px; border-radius: 100px;
+  font-family: var(--font-display); font-weight: 700; font-size: 14px;
+  text-decoration: none; border: none; cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s; display: inline-flex; align-items: center; gap: 8px;
+}
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(197,241,53,0.35); }
+.btn-secondary {
+  background: transparent; color: var(--text);
+  padding: 14px 28px; border-radius: 100px;
+  font-family: var(--font-display); font-weight: 600; font-size: 14px;
+  text-decoration: none; border: 1px solid var(--border);
+  cursor: pointer; transition: all 0.2s; display: inline-flex; align-items: center; gap: 8px;
+}
+.btn-secondary:hover { border-color: var(--lime); color: var(--lime); }
+.hero-stats { display: flex; gap: 36px; margin-top: 48px; padding-top: 36px; border-top: 1px solid var(--border); }
+.hero-stat-val { font-family: var(--font-display); font-size: 28px; font-weight: 800; color: var(--text); }
+.hero-stat-val span { color: var(--lime); }
+.hero-stat-label { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+
+/* Avatar */
+.hero-right { position: relative; z-index: 2; display: flex; justify-content: center; align-items: center; }
+.avatar-wrap {
+  position: relative; display: flex; justify-content: center;
+}
+.avatar-glow {
+  position: absolute; width: 400px; height: 400px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(197,241,53,0.15) 0%, transparent 70%);
+  animation: float 6s ease-in-out infinite;
+}
+@keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-16px)} }
+.avatar-img {
+  width: 380px; height: 380px; object-fit: cover; object-position: top;
+  border-radius: 50%;
+  border: 2px solid var(--border-active);
+  box-shadow: 0 0 80px rgba(197,241,53,0.15), inset 0 0 40px rgba(197,241,53,0.05);
+  animation: float 6s ease-in-out infinite;
+  position: relative; z-index: 2;
+}
+.avatar-ring {
+  position: absolute; width: 420px; height: 420px; border-radius: 50%;
+  border: 1px dashed rgba(197,241,53,0.2);
+  animation: spin 20s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.avatar-badge {
+  position: absolute; bottom: 20px; right: 0; z-index: 3;
+  background: var(--bg3); border: 1px solid var(--border);
+  border-radius: 12px; padding: 12px 16px;
+  display: flex; align-items: center; gap: 10px;
+  backdrop-filter: blur(10px);
+}
+.badge-dot { width: 8px; height: 8px; border-radius: 50%; background: #22c55e; animation: pulse 2s infinite; }
+.badge-text { font-size: 12px; color: var(--text-dim); font-family: var(--font-mono); }
+
+/* MARQUEE */
+.marquee-wrap {
+  overflow: hidden; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+  padding: 16px 0; background: var(--bg2);
+}
+.marquee-track {
+  display: flex; gap: 48px; width: max-content;
+  animation: marquee 20s linear infinite;
+}
+@keyframes marquee { to { transform: translateX(-50%); } }
+.marquee-item { font-family: var(--font-display); font-size: 13px; font-weight: 600; color: var(--text-muted); letter-spacing: 0.1em; text-transform: uppercase; white-space: nowrap; display: flex; align-items: center; gap: 16px; }
+.marquee-dot { color: var(--lime); font-size: 20px; }
+
+/* SECTION COMMON */
+.section-wrap { padding: 100px 48px; max-width: 1200px; margin: 0 auto; }
+.section-label {
+  font-family: var(--font-mono); font-size: 11px; color: var(--lime);
+  letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 12px;
+  display: flex; align-items: center; gap: 10px;
+}
+.section-label::before { content: ''; display: block; width: 24px; height: 1px; background: var(--lime); }
+.section-title {
+  font-family: var(--font-display); font-size: clamp(32px, 4vw, 52px);
+  font-weight: 800; letter-spacing: -1.5px; line-height: 1.1;
+  margin-bottom: 16px;
+}
+.section-title .hl { color: var(--lime); }
+.section-sub { font-size: 16px; color: var(--text-muted); max-width: 500px; font-weight: 300; }
+
+/* WORK */
+#work { background: var(--bg); }
+.work-tabs { display: flex; gap: 4px; margin: 48px 0 0; border-bottom: 1px solid var(--border); }
+.work-tab {
+  font-family: var(--font-display); font-size: 14px; font-weight: 600;
+  padding: 12px 24px; color: var(--text-muted); cursor: pointer;
+  border: none; background: transparent;
+  border-bottom: 2px solid transparent; margin-bottom: -1px;
+  transition: all 0.2s; white-space: nowrap;
+}
+.work-tab.active { color: var(--lime); border-bottom-color: var(--lime); }
+.work-tab:hover:not(.active) { color: var(--text-dim); }
+
+.work-panel { display: none; animation: fadeIn 0.4s ease; }
+.work-panel.active { display: grid; grid-template-columns: 1fr 1fr; gap: 0; margin-top: 48px; }
+@keyframes fadeIn { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
+
+.case-preview {
+  background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius);
+  overflow: hidden; position: relative;
+}
+.case-preview-inner {
+  padding: 40px; height: 400px; display: flex; flex-direction: column; justify-content: space-between;
+  position: relative; overflow: hidden;
+}
+.case-preview-bg {
+  position: absolute; inset: 0; opacity: 0.08;
+  background: linear-gradient(135deg, var(--lime) 0%, transparent 60%);
+}
+.case-num { font-family: var(--font-mono); font-size: 11px; color: var(--text-muted); margin-bottom: 16px; }
+.case-title { font-family: var(--font-display); font-size: 28px; font-weight: 800; letter-spacing: -0.5px; line-height: 1.1; }
+.case-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 12px; }
+.case-tag { font-size: 11px; padding: 4px 10px; border-radius: 100px; border: 1px solid var(--border); color: var(--text-muted); }
+.case-impact { margin-top: 20px; }
+.case-impact-val { font-family: var(--font-display); font-size: 36px; font-weight: 800; color: var(--lime); }
+.case-impact-label { font-size: 12px; color: var(--text-muted); }
+.case-btns { display: flex; gap: 8px; margin-top: 24px; flex-wrap: wrap; }
+.case-btn {
+  font-size: 12px; padding: 8px 16px; border-radius: 100px;
+  text-decoration: none; font-family: var(--font-display); font-weight: 600;
+  transition: all 0.2s; cursor: pointer; border: none;
+}
+.case-btn-primary { background: var(--lime); color: #060608; }
+.case-btn-primary:hover { box-shadow: 0 8px 20px rgba(197,241,53,0.3); transform: translateY(-1px); }
+.case-btn-outline { background: transparent; color: var(--text-dim); border: 1px solid var(--border); }
+.case-btn-outline:hover { border-color: var(--lime); color: var(--lime); }
+
+.case-detail {
+  padding: 40px; border-left: 1px solid var(--border);
+  display: flex; flex-direction: column; gap: 28px;
+}
+.case-section-title { font-family: var(--font-mono); font-size: 10px; color: var(--lime); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 10px; }
+.case-text { font-size: 14px; color: var(--text-dim); line-height: 1.7; font-weight: 300; }
+.case-metrics { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.case-metric { background: var(--bg3); border: 1px solid var(--border); border-radius: 10px; padding: 16px; }
+.case-metric-val { font-family: var(--font-display); font-size: 22px; font-weight: 800; color: var(--lime); }
+.case-metric-label { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+.process-steps { display: flex; flex-direction: column; gap: 8px; }
+.process-step { display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--text-dim); }
+.process-step-num { width: 24px; height: 24px; border-radius: 50%; border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 10px; font-family: var(--font-mono); color: var(--lime); flex-shrink: 0; }
+
+/* IMPACT */
+#impact { background: var(--bg2); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+.impact-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--border); margin-top: 48px; border-radius: var(--radius); overflow: hidden; }
+.impact-card {
+  background: var(--bg); padding: 36px 28px;
+  transition: background 0.3s;
+}
+.impact-card:hover { background: var(--bg3); }
+.impact-num { font-family: var(--font-display); font-size: 48px; font-weight: 800; color: var(--lime); line-height: 1; margin-bottom: 8px; }
+.impact-desc { font-size: 14px; color: var(--text-muted); line-height: 1.5; }
+.impact-sub { font-size: 12px; color: var(--text-muted); margin-top: 8px; font-family: var(--font-mono); opacity: 0.5; }
+
+/* VIDEOS */
+#motion { background: var(--bg); }
+.video-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 48px; }
+.video-card {
+  position: relative; background: var(--bg2); border: 1px solid var(--border);
+  border-radius: var(--radius); overflow: hidden; cursor: pointer;
+  aspect-ratio: 9/16; transition: border-color 0.3s, transform 0.3s;
+}
+.video-card:hover { border-color: var(--lime); transform: scale(1.02); }
+.video-card video { width: 100%; height: 100%; object-fit: cover; pointer-events: none; }
+.video-overlay {
+  position: absolute; inset: 0; background: linear-gradient(to top, rgba(6,6,8,0.9) 0%, transparent 50%);
+  display: flex; flex-direction: column; justify-content: flex-end; padding: 20px;
+  opacity: 0; transition: opacity 0.3s;
+}
+.video-card:hover .video-overlay { opacity: 1; }
+.video-play {
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+  width: 52px; height: 52px; border-radius: 50%;
+  background: rgba(197,241,53,0.9); display: flex; align-items: center; justify-content: center;
+  font-size: 18px; transition: transform 0.2s;
+}
+.video-card:hover .video-play { transform: translate(-50%,-50%) scale(1.1); }
+.video-title { font-family: var(--font-display); font-size: 14px; font-weight: 700; color: var(--text); }
+.video-sub { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+
+/* MODAL */
+.modal-bg {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 1000;
+  display: none; align-items: center; justify-content: center;
+  backdrop-filter: blur(10px);
+}
+.modal-bg.open { display: flex; }
+.modal-video { width: 90vw; max-width: 500px; border-radius: 16px; overflow: hidden; }
+.modal-video video { width: 100%; border-radius: 16px; }
+.modal-close {
+  position: absolute; top: 24px; right: 24px;
+  width: 44px; height: 44px; border-radius: 50%;
+  background: var(--bg3); border: 1px solid var(--border);
+  color: var(--text); font-size: 20px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+}
+
+/* AI SECTION */
+#ai { background: var(--bg2); }
+.ai-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 48px; }
+.ai-card {
+  background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 28px; transition: all 0.3s; position: relative; overflow: hidden;
+}
+.ai-card::before {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(135deg, var(--lime-glow) 0%, transparent 60%);
+  opacity: 0; transition: opacity 0.3s;
+}
+.ai-card:hover { border-color: var(--border-active); }
+.ai-card:hover::before { opacity: 1; }
+.ai-icon { font-size: 32px; margin-bottom: 16px; }
+.ai-card-title { font-family: var(--font-display); font-size: 18px; font-weight: 700; margin-bottom: 8px; }
+.ai-card-text { font-size: 14px; color: var(--text-muted); line-height: 1.6; font-weight: 300; }
+.ai-badge { display: inline-block; font-size: 11px; padding: 3px 10px; border-radius: 100px; border: 1px solid var(--border-active); color: var(--lime); font-family: var(--font-mono); margin-top: 12px; }
+
+/* DESIGN SYSTEM */
+#system { background: var(--bg); }
+.system-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; margin-top: 48px; }
+.ds-card {
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 32px; transition: all 0.3s;
+}
+.ds-card:hover { border-color: var(--border-active); }
+.ds-card-title { font-family: var(--font-display); font-size: 20px; font-weight: 700; margin-bottom: 12px; }
+.ds-stat { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--border); }
+.ds-stat:last-child { border-bottom: none; }
+.ds-stat-label { font-size: 13px; color: var(--text-muted); }
+.ds-stat-val { font-family: var(--font-display); font-size: 16px; font-weight: 700; color: var(--lime); }
+.token-grid { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+.token { width: 28px; height: 28px; border-radius: 6px; border: 1px solid var(--border); }
+
+/* ABOUT */
+#about { background: var(--bg2); }
+.about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: start; margin-top: 48px; }
+.about-text { font-size: 16px; color: var(--text-dim); line-height: 1.8; font-weight: 300; }
+.about-text p { margin-bottom: 20px; }
+.about-text strong { color: var(--text); font-weight: 500; }
+.skills-wrap { display: flex; flex-direction: column; gap: 12px; }
+.skill-row { display: flex; align-items: center; gap: 12px; }
+.skill-label { font-family: var(--font-mono); font-size: 12px; color: var(--text-muted); width: 120px; flex-shrink: 0; }
+.skill-bar { flex: 1; height: 4px; background: var(--bg3); border-radius: 2px; overflow: hidden; }
+.skill-fill { height: 100%; background: var(--lime); border-radius: 2px; transform-origin: left; animation: fillBar 1.5s ease forwards; transform: scaleX(0); }
+@keyframes fillBar { to { transform: scaleX(1); } }
+.skill-pct { font-size: 12px; color: var(--text-muted); font-family: var(--font-mono); width: 36px; text-align: right; }
+
+/* CONTACT */
+#contact { background: var(--bg); text-align: center; }
+.contact-inner { max-width: 640px; margin: 0 auto; padding: 100px 48px; }
+.contact-big {
+  font-family: var(--font-display); font-size: clamp(36px, 5vw, 64px);
+  font-weight: 800; letter-spacing: -2px; line-height: 1.1; margin-bottom: 20px;
+}
+.contact-big .hl { color: var(--lime); }
+.contact-sub { font-size: 16px; color: var(--text-muted); margin-bottom: 40px; font-weight: 300; }
+.contact-links { display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; margin-top: 32px; }
+.contact-link {
+  display: flex; align-items: center; gap: 8px;
+  padding: 12px 20px; border-radius: 100px; border: 1px solid var(--border);
+  color: var(--text-dim); text-decoration: none; font-size: 13px;
+  font-family: var(--font-mono); transition: all 0.2s;
+}
+.contact-link:hover { border-color: var(--lime); color: var(--lime); }
+
+/* FOOTER */
+footer {
+  border-top: 1px solid var(--border); padding: 24px 48px;
+  display: flex; justify-content: space-between; align-items: center;
+  font-size: 12px; color: var(--text-muted); font-family: var(--font-mono);
+}
+footer span { color: var(--lime); }
+
+/* SCROLL REVEAL */
+.reveal { opacity: 0; transform: translateY(30px); transition: all 0.7s ease; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+@media (max-width: 768px) {
+  nav { padding: 16px 20px; }
+  .nav-links { display: none; }
+  #hero { grid-template-columns: 1fr; padding: 100px 20px 60px; text-align: center; }
+  .hero-right { order: -1; }
+  .avatar-img { width: 200px; height: 200px; }
+  .avatar-ring { width: 240px; height: 240px; }
+  .avatar-glow { width: 240px; height: 240px; }
+  .section-wrap { padding: 60px 20px; }
+  .work-panel.active { grid-template-columns: 1fr; }
+  .case-detail { border-left: none; border-top: 1px solid var(--border); }
+  .impact-grid { grid-template-columns: 1fr 1fr; }
+  .video-grid { grid-template-columns: 1fr; }
+  .ai-grid, .system-grid, .about-grid { grid-template-columns: 1fr; }
+  .contact-inner { padding: 60px 20px; }
+  footer { flex-direction: column; gap: 8px; text-align: center; padding: 20px; }
+  .hero-stats { gap: 20px; flex-wrap: wrap; }
+}
+</style>
+</head>
+<body>
+
+<div id="cursor"></div>
+<div id="cursor-trail"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">Sachin<span>.</span></div>
+  <div class="nav-links">
+    <a href="#work">Work</a>
+    <a href="#impact">Impact</a>
+    <a href="#motion">Motion</a>
+    <a href="#ai">AI in UX</a>
+    <a href="#about">About</a>
+    <a href="Sachin_Kumar_M.pdf" download class="nav-cta">Resume ↓</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg-grid"></div>
+  <div class="hero-bg-glow"></div>
+  <div class="hero-left reveal">
+    <div class="hero-tag">
+      <div class="hero-tag-dot"></div>
+      <span>Open to opportunities · Chennai</span>
+    </div>
+    <h1 class="hero-h1">Hey, I'm<br><span class="name">Sachin</span> ✦</h1>
+    <p class="hero-sub">UX Designer crafting scalable, intuitive, and high-impact digital experiences.</p>
+    <p class="hero-tagline">I turn complex problems into simple, usable products.</p>
+    <div class="hero-btns">
+      <a href="#work" class="btn-primary">View Work →</a>
+      <a href="Sachin_Kumar_M.pdf" download class="btn-secondary">↓ Resume</a>
+      <a href="#contact" class="btn-secondary">Let's Connect</a>
+    </div>
+    <div class="hero-stats">
+      <div>
+        <div class="hero-stat-val"><span>28%</span></div>
+        <div class="hero-stat-label">Task completion ↑</div>
+      </div>
+      <div>
+        <div class="hero-stat-val"><span>2.5+</span> yrs</div>
+        <div class="hero-stat-label">Enterprise UX</div>
+      </div>
+      <div>
+        <div class="hero-stat-val"><span>150+</span></div>
+        <div class="hero-stat-label">Components built</div>
+      </div>
+    </div>
+  </div>
+  <div class="hero-right reveal">
+    <div class="avatar-wrap">
+      <div class="avatar-glow"></div>
+      <div class="avatar-ring"></div>
+      <img src="1775600959381.png" alt="Sachin Kumar M" class="avatar-img" onerror="this.style.display='none'">
+      <div class="avatar-badge">
+        <div class="badge-dot"></div>
+        <div class="badge-text">UX Designer @ TCS</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <span class="marquee-item">Figma Expert <span class="marquee-dot">✦</span></span>
+    <span class="marquee-item">Design Systems <span class="marquee-dot">✦</span></span>
+    <span class="marquee-item">User Research <span class="marquee-dot">✦</span></span>
+    <span class="marquee-item">Motion Design <span class="marquee-dot">✦</span></span>
+    <span class="marquee-item">Frontend-Aware <span class="marquee-dot">✦</span></span>
+    <span class="marquee-item">Product Thinking <span class="marquee-dot">✦</span></span>
+    <span class="marquee-item">WCAG 2.1 AA <span class="marquee-dot">✦</span></span>
+    <span class="marquee-item">Dev Handoff <span class="marquee-dot">✦</span></span>
+    <span class="marquee-item">Figma Expert <span class="marquee-dot">✦</span></span>
+    <span class="marquee-item">Design Systems <span class="marquee-dot">✦</span></span>
+    <span class="marquee-item">User Research <span class="marquee-dot">✦</span></span>
+    <span class="marquee-item">Motion Design <span class="marquee-dot">✦</span></span>
+    <span class="marquee-item">Frontend-Aware <span class="marquee-dot">✦</span></span>
+    <span class="marquee-item">Product Thinking <span class="marquee-dot">✦</span></span>
+    <span class="marquee-item">WCAG 2.1 AA <span class="marquee-dot">✦</span></span>
+    <span class="marquee-item">Dev Handoff <span class="marquee-dot">✦</span></span>
+  </div>
+</div>
+
+<!-- WORK -->
+<section id="work">
+  <div class="section-wrap">
+    <div class="reveal">
+      <div class="section-label">Selected Work</div>
+      <h2 class="section-title">Case <span class="hl">Studies</span></h2>
+      <p class="section-sub">Deep product thinking. Measurable outcomes. Built for scale.</p>
+    </div>
+    <div class="work-tabs">
+      <button class="work-tab active" onclick="switchTab('razorpay', this)">01 — Razorpay</button>
+      <button class="work-tab" onclick="switchTab('lumina', this)">02 — Lumina DS</button>
+      <button class="work-tab" onclick="switchTab('reptrack', this)">03 — RepTrack</button>
+    </div>
+
+    <!-- RAZORPAY -->
+    <div id="tab-razorpay" class="work-panel active">
+      <div class="case-preview">
+        <div class="case-preview-inner">
+          <div class="case-preview-bg"></div>
+          <div>
+            <div class="case-num">Case Study / 01</div>
+            <div class="case-title">Razorpay<br>Checkout<br>Redesign</div>
+            <div class="case-tags">
+              <span class="case-tag">UX Research</span>
+              <span class="case-tag">UI Design</span>
+              <span class="case-tag">Prototyping</span>
+              <span class="case-tag">Fintech</span>
+            </div>
+          </div>
+          <div>
+            <div class="case-impact">
+              <div class="case-impact-val">42%</div>
+              <div class="case-impact-label">Reduction in task time</div>
+            </div>
+            <div class="case-btns">
+              <a href="razorpay-checkout-redesign__6_.html" target="_blank" class="case-btn case-btn-primary">View Case Study →</a>
+              <a href="https://www.behance.net/sachinkumarm" target="_blank" class="case-btn case-btn-outline">Behance ↗</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="case-detail">
+        <div>
+          <div class="case-section-title">Problem</div>
+          <div class="case-text">Critical drop-off identified in the payment confirmation step. Users abandoning checkout due to friction in a 3-step flow with unclear error states and unoptimized UX copy.</div>
+        </div>
+        <div>
+          <div class="case-section-title">Impact</div>
+          <div class="case-metrics">
+            <div class="case-metric"><div class="case-metric-val">42%</div><div class="case-metric-label">Task time reduction</div></div>
+            <div class="case-metric"><div class="case-metric-val">18%</div><div class="case-metric-label">Drop-off reduced</div></div>
+            <div class="case-metric"><div class="case-metric-val">3→1</div><div class="case-metric-label">Steps simplified</div></div>
+            <div class="case-metric"><div class="case-metric-val">100%</div><div class="case-metric-label">Token documented</div></div>
+          </div>
+        </div>
+        <div>
+          <div class="case-section-title">Process</div>
+          <div class="process-steps">
+            <div class="process-step"><div class="process-step-num">1</div>Friction analysis & heuristic audit</div>
+            <div class="process-step"><div class="process-step-num">2</div>User interviews & task testing</div>
+            <div class="process-step"><div class="process-step-num">3</div>Wireframes → High-fidelity</div>
+            <div class="process-step"><div class="process-step-num">4</div>Design token documentation</div>
+            <div class="process-step"><div class="process-step-num">5</div>Interactive HTML prototype</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- LUMINA -->
+    <div id="tab-lumina" class="work-panel">
+      <div class="case-preview">
+        <div class="case-preview-inner" style="background: var(--bg3);">
+          <div class="case-preview-bg" style="background: linear-gradient(135deg, rgba(147,112,219,0.2) 0%, transparent 60%);"></div>
+          <div>
+            <div class="case-num">Case Study / 02</div>
+            <div class="case-title">Lumina<br>Design<br>System</div>
+            <div class="case-tags">
+              <span class="case-tag">Design System</span>
+              <span class="case-tag">Components</span>
+              <span class="case-tag">Tokens</span>
+              <span class="case-tag">Scale</span>
+            </div>
+          </div>
+          <div>
+            <div class="case-impact">
+              <div class="case-impact-val" style="color:#a78bfa;">150+</div>
+              <div class="case-impact-label">Components shipped</div>
+            </div>
+            <div class="case-btns">
+              <a href="#" class="case-btn case-btn-primary" style="background:#a78bfa;">View System →</a>
+              <a href="https://www.behance.net/sachinkumarm" target="_blank" class="case-btn case-btn-outline">Behance ↗</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="case-detail">
+        <div>
+          <div class="case-section-title">Challenge</div>
+          <div class="case-text">No unified design language across 12 product modules. Engineers and designers working in silos, inconsistent components, zero token documentation. Pega → AWS migration requiring a complete system rethink.</div>
+        </div>
+        <div>
+          <div class="case-section-title">Impact</div>
+          <div class="case-metrics">
+            <div class="case-metric"><div class="case-metric-val" style="color:#a78bfa;">40%</div><div class="case-metric-label">Faster dev handoff</div></div>
+            <div class="case-metric"><div class="case-metric-val" style="color:#a78bfa;">150+</div><div class="case-metric-label">Components</div></div>
+            <div class="case-metric"><div class="case-metric-val" style="color:#a78bfa;">1000+</div><div class="case-metric-label">Variants</div></div>
+            <div class="case-metric"><div class="case-metric-val" style="color:#a78bfa;">100+</div><div class="case-metric-label">Design variables</div></div>
+          </div>
+        </div>
+        <div>
+          <div class="case-section-title">System Stack</div>
+          <div class="process-steps">
+            <div class="process-step"><div class="process-step-num" style="color:#a78bfa;border-color:#a78bfa40;">1</div>Token architecture (color, spacing, type)</div>
+            <div class="process-step"><div class="process-step-num" style="color:#a78bfa;border-color:#a78bfa40;">2</div>Component library with auto layout</div>
+            <div class="process-step"><div class="process-step-num" style="color:#a78bfa;border-color:#a78bfa40;">3</div>Multi-theme support (light/dark)</div>
+            <div class="process-step"><div class="process-step-num" style="color:#a78bfa;border-color:#a78bfa40;">4</div>WCAG 2.1 AA accessibility baked in</div>
+            <div class="process-step"><div class="process-step-num" style="color:#a78bfa;border-color:#a78bfa40;">5</div>Figma Inspect + Confluence docs</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- REPTRACK -->
+    <div id="tab-reptrack" class="work-panel">
+      <div class="case-preview">
+        <div class="case-preview-inner" style="background: var(--bg3);">
+          <div class="case-preview-bg" style="background: linear-gradient(135deg, rgba(197,241,53,0.15) 0%, transparent 60%);"></div>
+          <div>
+            <div class="case-num">Case Study / 03</div>
+            <div class="case-title">RepTrack<br>Fitness<br>App</div>
+            <div class="case-tags">
+              <span class="case-tag">End-to-End UX</span>
+              <span class="case-tag">Mobile</span>
+              <span class="case-tag">Android</span>
+              <span class="case-tag">India Market</span>
+            </div>
+          </div>
+          <div>
+            <div class="case-impact">
+              <div class="case-impact-val">73%</div>
+              <div class="case-impact-label">Week-1 drop-off addressed</div>
+            </div>
+            <div class="case-btns">
+              <a href="gym-ux-casestudy__1_.html" target="_blank" class="case-btn case-btn-primary">View Case Study →</a>
+              <a href="https://www.behance.net/sachinkumarm" target="_blank" class="case-btn case-btn-outline">Behance ↗</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="case-detail">
+        <div>
+          <div class="case-section-title">Problem</div>
+          <div class="case-text">73% of Indian gym users drop off within week 1. Existing apps are cluttered, require internet, and too slow to log during a 60-second rest window. Designed for the Indian context — offline-first, 2-tap logging.</div>
+        </div>
+        <div>
+          <div class="case-section-title">Key Metrics</div>
+          <div class="case-metrics">
+            <div class="case-metric"><div class="case-metric-val">2-tap</div><div class="case-metric-label">Set logging target</div></div>
+            <div class="case-metric"><div class="case-metric-val">12 PRs</div><div class="case-metric-label">Tracked per user/mo</div></div>
+            <div class="case-metric"><div class="case-metric-val">60s</div><div class="case-metric-label">Rest window design</div></div>
+            <div class="case-metric"><div class="case-metric-val">100%</div><div class="case-metric-label">Offline-first</div></div>
+          </div>
+        </div>
+        <div>
+          <div class="case-section-title">Process</div>
+          <div class="process-steps">
+            <div class="process-step"><div class="process-step-num">1</div>User interviews at local gyms</div>
+            <div class="process-step"><div class="process-step-num">2</div>Pain point mapping & personas</div>
+            <div class="process-step"><div class="process-step-num">3</div>Low-fi → High-fi Figma prototype</div>
+            <div class="process-step"><div class="process-step-num">4</div>Micro-interactions & transitions</div>
+            <div class="process-step"><div class="process-step-num">5</div>Usability testing & iteration</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- IMPACT -->
+<section id="impact">
+  <div class="section-wrap reveal">
+    <div class="section-label">Measurable Results</div>
+    <h2 class="section-title">Design that <span class="hl">Moves</span> Numbers</h2>
+    <p class="section-sub">Every decision backed by data. Every pixel justified by outcomes.</p>
+    <div class="impact-grid">
+      <div class="impact-card">
+        <div class="impact-num">28%</div>
+        <div class="impact-desc">Task completion improvement across health insurance platform</div>
+        <div class="impact-sub">Cigna · TCS · 2024</div>
+      </div>
+      <div class="impact-card">
+        <div class="impact-num">35%</div>
+        <div class="impact-desc">Reduction in user onboarding time through iterative testing</div>
+        <div class="impact-sub">Platform Redesign · 2024</div>
+      </div>
+      <div class="impact-card">
+        <div class="impact-num">40%</div>
+        <div class="impact-desc">Faster developer handoff with Lumina design system</div>
+        <div class="impact-sub">Design System · 2024</div>
+      </div>
+      <div class="impact-card">
+        <div class="impact-num">42%</div>
+        <div class="impact-desc">Simulated task time reduced in Razorpay checkout flow</div>
+        <div class="impact-sub">Case Study · 2024</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MOTION -->
+<section id="motion">
+  <div class="section-wrap reveal">
+    <div class="section-label">Motion & Interaction</div>
+    <h2 class="section-title">Products in <span class="hl">Motion</span></h2>
+    <p class="section-sub">UI animations, product walkthroughs, and motion prototypes.</p>
+    <div class="video-grid">
+      <div class="video-card" onclick="openModal('your_thoughts__now_in_motion_.mp4')">
+        <video src="your_thoughts__now_in_motion_.mp4" muted loop autoplay playsinline></video>
+        <div class="video-play">▶</div>
+        <div class="video-overlay">
+          <div class="video-title">Your Thoughts in Motion</div>
+          <div class="video-sub">Motion prototype · UI Animation</div>
+        </div>
+      </div>
+      <div class="video-card" onclick="openModal('we_are_here_to_get_fit.mp4')">
+        <video src="we_are_here_to_get_fit.mp4" muted loop autoplay playsinline></video>
+        <div class="video-play">▶</div>
+        <div class="video-overlay">
+          <div class="video-title">We Are Here to Get Fit</div>
+          <div class="video-sub">RepTrack · Product walkthrough</div>
+        </div>
+      </div>
+      <div class="video-card" onclick="openModal('WhatsApp_Video_2026-04-08_at_5_00_53_AM__1_.mp4')">
+        <video src="WhatsApp_Video_2026-04-08_at_5_00_53_AM__1_.mp4" muted loop autoplay playsinline></video>
+        <div class="video-play">▶</div>
+        <div class="video-overlay">
+          <div class="video-title">Interaction Demo</div>
+          <div class="video-sub">Micro-interactions · Motion</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- AI IN UX -->
+<section id="ai">
+  <div class="section-wrap reveal">
+    <div class="section-label">Future-Ready</div>
+    <h2 class="section-title">AI in <span class="hl">UX</span></h2>
+    <p class="section-sub">Practical AI workflows that make design faster, smarter, and more impactful.</p>
+    <div class="ai-grid">
+      <div class="ai-card">
+        <div class="ai-icon">⚡</div>
+        <div class="ai-card-title">Prompt-Based Design</div>
+        <div class="ai-card-text">Using AI prompts to rapidly generate wireframe variations, copy alternatives, and UX flows — cutting ideation time from days to hours.</div>
+        <div class="ai-badge">Figma AI · GPT-4</div>
+      </div>
+      <div class="ai-card">
+        <div class="ai-icon">🤖</div>
+        <div class="ai-card-title">Workflow Automation</div>
+        <div class="ai-card-text">Automating repetitive design tasks with n8n workflows — component documentation, asset exports, Confluence updates, and Jira ticket creation.</div>
+        <div class="ai-badge">n8n · Make · Zapier</div>
+      </div>
+      <div class="ai-card">
+        <div class="ai-icon">🔬</div>
+        <div class="ai-card-title">AI-Assisted Research</div>
+        <div class="ai-card-text">Synthesizing user interview transcripts, clustering pain points, and generating insight summaries using AI — from 40 hours of analysis to 4.</div>
+        <div class="ai-badge">Claude · Notion AI</div>
+      </div>
+      <div class="ai-card">
+        <div class="ai-icon">🎨</div>
+        <div class="ai-card-title">Faster Prototyping</div>
+        <div class="ai-card-text">AI-generated component variants, color token suggestions, and accessibility checks integrated directly into the Figma design workflow.</div>
+        <div class="ai-badge">Figma Plugins · AI</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DESIGN SYSTEM -->
+<section id="system" style="border-top: 1px solid var(--border);">
+  <div class="section-wrap reveal">
+    <div class="section-label">System Thinking</div>
+    <h2 class="section-title">Lumina <span class="hl">Design System</span></h2>
+    <p class="section-sub">Scalable, token-based, multi-theme. Built for enterprise teams.</p>
+    <div class="system-grid">
+      <div class="ds-card">
+        <div class="ds-card-title">Component Library</div>
+        <div class="ds-stat"><span class="ds-stat-label">Total Components</span><span class="ds-stat-val">150+</span></div>
+        <div class="ds-stat"><span class="ds-stat-label">Variants per component</span><span class="ds-stat-val">~7</span></div>
+        <div class="ds-stat"><span class="ds-stat-label">Total variants</span><span class="ds-stat-val">1000+</span></div>
+        <div class="ds-stat"><span class="ds-stat-label">Modules covered</span><span class="ds-stat-val">12</span></div>
+        <div class="ds-stat"><span class="ds-stat-label">Handoff improvement</span><span class="ds-stat-val">40% faster</span></div>
+      </div>
+      <div class="ds-card">
+        <div class="ds-card-title">Design Tokens</div>
+        <div class="ds-stat"><span class="ds-stat-label">Design variables</span><span class="ds-stat-val">100+</span></div>
+        <div class="ds-stat"><span class="ds-stat-label">Theme support</span><span class="ds-stat-val">Light + Dark</span></div>
+        <div class="ds-stat"><span class="ds-stat-label">Accessibility</span><span class="ds-stat-val">WCAG 2.1 AA</span></div>
+        <div class="ds-stat"><span class="ds-stat-label">Migration</span><span class="ds-stat-val">Pega → AWS</span></div>
+        <div class="token-grid">
+          <div class="token" style="background:#C5F135;"></div>
+          <div class="token" style="background:#a78bfa;"></div>
+          <div class="token" style="background:#f59e0b;"></div>
+          <div class="token" style="background:#22c55e;"></div>
+          <div class="token" style="background:#ef4444;"></div>
+          <div class="token" style="background:#3b82f6;"></div>
+          <div class="token" style="background:#ec4899;"></div>
+          <div class="token" style="background:#f97316;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-wrap reveal">
+    <div class="section-label">The Person</div>
+    <h2 class="section-title">Why <span class="hl">Sachin</span>?</h2>
+    <div class="about-grid">
+      <div>
+        <div class="about-text">
+          <p>I'm a UX Designer at <strong>Tata Consultancy Services</strong>, where I've spent 2.5+ years redesigning enterprise-scale products in the health insurance domain for <strong>Cigna Healthcare</strong> — a platform serving 100,000+ users.</p>
+          <p>What makes me different? I'm not just a pixel pusher. I think in <strong>systems</strong>, move in <strong>sprints</strong>, and speak the language of both users and engineers. My Figma files are developer-ready. My prototypes are stakeholder-ready. My metrics are business-ready.</p>
+          <p>I built a design system from scratch (<strong>Lumina</strong>), cut a checkout flow from 3 steps to 1 (<strong>Razorpay</strong>), and designed a gym app that finally makes sense for Indian users (<strong>RepTrack</strong>).</p>
+          <p>Right now, I'm looking to bring this product thinking to a fast-moving company — <strong>Swiggy, Razorpay, CRED, Zepto</strong> — wherever design can make the biggest dent.</p>
+        </div>
+      </div>
+      <div class="skills-wrap">
+        <div class="skill-row"><span class="skill-label">Figma</span><div class="skill-bar"><div class="skill-fill" style="width:95%"></div></div><span class="skill-pct">95%</span></div>
+        <div class="skill-row"><span class="skill-label">Design Systems</span><div class="skill-bar"><div class="skill-fill" style="width:90%;animation-delay:0.1s"></div></div><span class="skill-pct">90%</span></div>
+        <div class="skill-row"><span class="skill-label">UX Research</span><div class="skill-bar"><div class="skill-fill" style="width:85%;animation-delay:0.2s"></div></div><span class="skill-pct">85%</span></div>
+        <div class="skill-row"><span class="skill-label">Prototyping</span><div class="skill-bar"><div class="skill-fill" style="width:92%;animation-delay:0.3s"></div></div><span class="skill-pct">92%</span></div>
+        <div class="skill-row"><span class="skill-label">HTML/CSS</span><div class="skill-bar"><div class="skill-fill" style="width:75%;animation-delay:0.4s"></div></div><span class="skill-pct">75%</span></div>
+        <div class="skill-row"><span class="skill-label">Motion Design</span><div class="skill-bar"><div class="skill-fill" style="width:80%;animation-delay:0.5s"></div></div><span class="skill-pct">80%</span></div>
+        <div class="skill-row"><span class="skill-label">AI Tools</span><div class="skill-bar"><div class="skill-fill" style="width:85%;animation-delay:0.6s"></div></div><span class="skill-pct">85%</span></div>
+        <div class="skill-row"><span class="skill-label">Jira / Confluence</span><div class="skill-bar"><div class="skill-fill" style="width:80%;animation-delay:0.7s"></div></div><span class="skill-pct">80%</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-inner reveal">
+    <div class="section-label" style="justify-content:center;">Contact</div>
+    <div class="contact-big">Let's build something<br><span class="hl">meaningful</span></div>
+    <p class="contact-sub">Open to full-time UX roles at product-focused companies.<br>Chennai-based. Available immediately.</p>
+    <a href="mailto:er_sachinkumarm@outlook.com" class="btn-primary" style="display:inline-flex;">Say Hello →</a>
+    <div class="contact-links">
+      <a href="https://linkedin.com/in/sachin1720" target="_blank" class="contact-link">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        LinkedIn
+      </a>
+      <a href="https://www.behance.net/sachinkumarm" target="_blank" class="contact-link">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M22 7h-7V5h7v2zm1.726 10c-.442 1.297-2.029 3-5.101 3-3.074 0-5.051-2.053-5.051-5.329 0-3.261 1.929-5.275 5.021-5.275 3.071 0 4.864 1.909 5.056 4.642.031.503.003 1.010-.01 1.545H15.67c.166 1.523.886 2.386 2.052 2.386 1.016 0 1.626-.545 1.92-1.330l2.084.361zm-4.924-3.381c-.105-1.285-.672-2.044-1.706-2.044-1.048 0-1.722.783-1.844 2.044h3.550zm-13.302 5.381H0V4h4.396c2.826 0 4.536 1.30 4.536 3.498 0 1.373-.688 2.375-1.755 2.867 1.29.432 2.098 1.488 2.098 2.994 0 2.454-1.777 3.641-4.375 3.641zm-1.946-6.234h2.175c1.271 0 1.959-.578 1.959-1.682 0-1.102-.69-1.654-1.942-1.654H3.554v3.336zm0 4.551h2.399c1.381 0 2.098-.617 2.098-1.822 0-1.185-.729-1.815-2.129-1.815H3.554v3.637z"/></svg>
+        Behance
+      </a>
+      <a href="Sachin_Kumar_M.pdf" download class="contact-link">
+        ↓ Resume PDF
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span>Sachin Kumar M — UX Designer</span>
+  <span>Crafted with <span>♥</span> in Chennai · 2026</span>
+</footer>
+
+<!-- VIDEO MODAL -->
+<div class="modal-bg" id="videoModal" onclick="closeModal(event)">
+  <button class="modal-close" onclick="closeModal()">✕</button>
+  <div class="modal-video">
+    <video id="modalVideo" controls style="width:100%;border-radius:16px;"></video>
+  </div>
+</div>
+
+<script>
+// Custom cursor
+const cursor = document.getElementById('cursor');
+const trail = document.getElementById('cursor-trail');
+let mx = 0, my = 0, tx = 0, ty = 0;
+document.addEventListener('mousemove', e => {
+  mx = e.clientX; my = e.clientY;
+  cursor.style.left = mx + 'px'; cursor.style.top = my + 'px';
+});
+function animTrail() {
+  tx += (mx - tx) * 0.15; ty += (my - ty) * 0.15;
+  trail.style.left = tx + 'px'; trail.style.top = ty + 'px';
+  requestAnimationFrame(animTrail);
+}
+animTrail();
+document.querySelectorAll('a,button,.video-card').forEach(el => {
+  el.addEventListener('mouseenter', () => { cursor.style.transform = 'translate(-50%,-50%) scale(2)'; trail.style.transform = 'translate(-50%,-50%) scale(0.5)'; });
+  el.addEventListener('mouseleave', () => { cursor.style.transform = 'translate(-50%,-50%) scale(1)'; trail.style.transform = 'translate(-50%,-50%) scale(1)'; });
+});
+
+// Tab switching
+function switchTab(id, el) {
+  document.querySelectorAll('.work-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.work-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  el.classList.add('active');
+}
+
+// Video modal
+function openModal(src) {
+  const modal = document.getElementById('videoModal');
+  const vid = document.getElementById('modalVideo');
+  vid.src = src; vid.play();
+  modal.classList.add('open');
+}
+function closeModal(e) {
+  if (!e || e.target === document.getElementById('videoModal') || e.currentTarget.classList.contains('modal-close')) {
+    document.getElementById('videoModal').classList.remove('open');
+    document.getElementById('modalVideo').pause();
+    document.getElementById('modalVideo').src = '';
+  }
+}
+
+// Scroll reveal
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting) { e.target.classList.add('visible'); } });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// Counter animation
+function animateCounters() {
+  document.querySelectorAll('.impact-num').forEach(el => {
+    const text = el.textContent;
+    const num = parseFloat(text);
+    if(isNaN(num)) return;
+    let start = 0; const end = num; const dur = 1500;
+    const step = timestamp => {
+      if(!start) start = timestamp;
+      const p = Math.min((timestamp - start) / dur, 1);
+      const ease = 1 - Math.pow(1 - p, 3);
+      el.textContent = Math.floor(ease * end) + (text.includes('%') ? '%' : '');
+      if(p < 1) requestAnimationFrame(step);
+      else el.textContent = text;
+    };
+    requestAnimationFrame(step);
+  });
+}
+const impactSection = document.getElementById('impact');
+const impactObs = new IntersectionObserver(entries => {
+  if(entries[0].isIntersecting) { animateCounters(); impactObs.disconnect(); }
+}, { threshold: 0.3 });
+impactObs.observe(impactSection);
+</script>
+</body>
+</html>
