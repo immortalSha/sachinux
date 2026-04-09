@@ -214,12 +214,15 @@ position: relative;
 }
 
 .comet-inner {
-  width: 280px;
+  width: 320px;
   border-radius: 20px;
   background: #1a1a1a;
   padding: 12px;
-  transition: transform 0.3s ease;
+  transition: transform 0.12s ease;
   transform-style: preserve-3d;
+}
+  .comet-inner:hover {
+  transform: scale(1.04);
 }
 
 .comet-image {
@@ -1060,8 +1063,8 @@ if (card) {
     const centerX = rect.width / 2;
     const centerY = rect.height / 2;
 
-    const rotateX = -(y - centerY) / 25;
-    const rotateY = (x - centerX) / 25;
+    const rotateX = -(y - centerY) / 18;
+    const rotateY = (x - centerX) / 18;
 
     card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.03)`;
   });
