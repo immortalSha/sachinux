@@ -200,6 +200,32 @@ section { position: relative; z-index: 1; }
 }
 .badge-dot { width: 8px; height: 8px; border-radius: 50%; background: #22c55e; animation: pulse 2s infinite; }
 .badge-text { font-size: 12px; color: var(--text-dim); font-family: var(--font-mono); }
+/* COMET CARD UPGRADE */
+.comet-card {
+  perspective: 1000px;
+  transition: transform 0.2s ease;
+}
+
+.comet-card .avatar-img {
+  transition: transform 0.2s ease;
+  transform-style: preserve-3d;
+}
+
+/* Cursor glow */
+.comet-glow {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  background: radial-gradient(circle at center, rgba(197,241,53,0.25), transparent 60%);
+  z-index: 1;
+}
+
+.comet-card:hover .comet-glow {
+  opacity: 1;
+}
 
 /* MARQUEE */
 .marquee-wrap {
@@ -496,7 +522,8 @@ footer span { color: var(--lime); }
     </div>
   </div>
   <div class="hero-right reveal">
-    <div class="avatar-wrap">
+    <div class="avatar-wrap comet-card">
+      <div class="comet-glow"></div>
       <div class="avatar-glow"></div>
       <div class="avatar-ring"></div>
       <img src="1775600959381.png" alt="Sachin Kumar M" class="avatar-img" onerror="this.style.display='none'">
@@ -975,6 +1002,35 @@ function animateCounters() {
       else el.textContent = text;
     };
     requestAnimationFrame(step);
+  });
+}
+
+// COMET CARD INTERACTION
+const comet = document.querySelector('.comet-card');
+
+if (comet) {
+  comet.addEventListener('mousemove', (e) => {
+    const rect = comet.getBoundingClientRect();
+
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+
+    const rotateX = -(y - centerY) / 20;
+    const rotateY = (x - centerX) / 20;
+
+    const img = comet.querySelector('.avatar-img');
+    img.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.03)`;
+
+    const glow = comet.querySelector('.comet-glow');
+    glow.style.background = `radial-gradient(circle at ${x}px ${y}px, rgba(197,241,53,0.3), transparent 60%)`;
+  });
+
+  comet.addEventListener('mouseleave', () => {
+    const img = comet.querySelector('.avatar-img');
+    img.style.transform = `rotateX(0deg) rotateY(0deg) scale(1)`;
   });
 }
 const impactSection = document.getElementById('impact');
