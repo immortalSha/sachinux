@@ -206,15 +206,47 @@ position: relative;
 }
 .badge-dot { width: 8px; height: 8px; border-radius: 50%; background: #22c55e; animation: pulse 2s infinite; }
 .badge-text { font-size: 12px; color: var(--text-dim); font-family: var(--font-mono); }
-/* COMET CARD UPGRADE */
+/* COMET CARD FULL STYLE */
 .comet-card {
   perspective: 1000px;
-  transition: transform 0.2s ease;
+  display: flex;
+  justify-content: center;
 }
 
-.comet-card .avatar-img {
-  transition: transform 0.2s ease;
+.comet-inner {
+  width: 280px;
+  border-radius: 20px;
+  background: #1a1a1a;
+  padding: 12px;
+  transition: transform 0.3s ease;
   transform-style: preserve-3d;
+}
+
+.comet-image {
+  width: 100%;
+  aspect-ratio: 3/4;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.comet-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: contrast(0.8);
+}
+
+.comet-footer {
+  display: flex;
+  justify-content: space-between;
+  padding: 14px;
+  font-family: monospace;
+  font-size: 12px;
+  color: #fff;
+}
+
+.comet-footer span:last-child {
+  color: #888;
 }
 
 /* Cursor glow */
@@ -528,16 +560,20 @@ footer span { color: var(--lime); }
     </div>
   </div>
   <div class="hero-right reveal">
-    <div class="avatar-wrap comet-card">
-      <div class="comet-glow"></div>
-      <div class="avatar-glow"></div>
-      <div class="avatar-ring"></div>
-      <img src="1775600959381.png" alt="Sachin Kumar M" class="avatar-img" onerror="this.style.display='none'">
-      <div class="avatar-badge">
-        <div class="badge-dot"></div>
-        <div class="badge-text">UX Designer @ TCS</div>
-      </div>
+ <div class="comet-card">
+  <div class="comet-inner">
+    
+    <div class="comet-image">
+      <img src="1775600959381.png" alt="Sachin Kumar">
     </div>
+
+    <div class="comet-footer">
+      <span>UX Designer</span>
+      <span>#TCS</span>
+    </div>
+
+  </div>
+</div>
   </div>
 </section>
 
@@ -1012,11 +1048,11 @@ function animateCounters() {
 }
 
 // COMET CARD INTERACTION
-const comet = document.querySelector('.comet-card');
+const card = document.querySelector('.comet-inner');
 
-if (comet) {
-  comet.addEventListener('mousemove', (e) => {
-    const rect = comet.getBoundingClientRect();
+if (card) {
+  card.addEventListener('mousemove', (e) => {
+    const rect = card.getBoundingClientRect();
 
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
@@ -1024,23 +1060,16 @@ if (comet) {
     const centerX = rect.width / 2;
     const centerY = rect.height / 2;
 
-    const rotateX = -(y - centerY) / 20;
-    const rotateY = (x - centerX) / 20;
+    const rotateX = -(y - centerY) / 25;
+    const rotateY = (x - centerX) / 25;
 
-    const img = comet.querySelector('.avatar-img');
-    img.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.03)`;
-
-    const glow = comet.querySelector('.comet-glow');
-    glow.style.background = `radial-gradient(circle at ${x}px ${y}px, rgba(197,241,53,0.3), transparent 60%)`;
+    card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.03)`;
   });
 
-  comet.addEventListener('mouseleave', () => {
-    const img = comet.querySelector('.avatar-img');
-    img.style.transform = `rotateX(0deg) rotateY(0deg) scale(1)`;
+  card.addEventListener('mouseleave', () => {
+    card.style.transform = `rotateX(0deg) rotateY(0deg) scale(1)`;
   });
 }
-const rotateX = -(y - centerY) / 25;
-const rotateY = (x - centerX) / 25;
 impactObs.observe(impactSection);
 </script>
 </body>
