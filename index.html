@@ -1073,7 +1073,16 @@ if (card) {
     card.style.transform = `rotateX(0deg) rotateY(0deg) scale(1)`;
   });
 }
-impactObs.observe(impactSection);
+const impactSection = document.getElementById('impact');
+const impactObserver = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      animateCounters();
+      impactObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.3 });
+if (impactSection) impactObserver.observe(impactSection);
 </script>
 </body>
 </html>
