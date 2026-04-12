@@ -431,6 +431,27 @@ position: relative;
 .ai-card-title { font-family: var(--font-display); font-size: 18px; font-weight: 700; margin-bottom: 8px; }
 .ai-card-text { font-size: 14px; color: var(--text-muted); line-height: 1.6; font-weight: 300; }
 .ai-badge { display: inline-block; font-size: 11px; padding: 3px 10px; border-radius: 100px; border: 1px solid var(--border-active); color: var(--lime); font-family: var(--font-mono); margin-top: 12px; }
+  .ai-card {
+  --active: 0;
+  --start: 0;
+}
+.ai-card::after {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: var(--radius);
+  border: 1px solid transparent;
+  background: conic-gradient(
+    from calc((var(--start) - 40) * 1deg) at 50% 50%,
+    #dd7bbb, #d79f1e, #5a922c, #4c7894, #dd7bbb
+  ) border-box;
+  -webkit-mask: linear-gradient(#000 0 0) padding-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: destination-out;
+  mask-composite: exclude;
+  opacity: var(--active);
+  transition: opacity 0.3s;
+  pointer-events: none;
+}
 
 /* DESIGN SYSTEM */
 #system { background: var(--bg); }
@@ -537,7 +558,7 @@ footer span { color: var(--lime); }
   <div class="hero-left reveal">
     <div class="hero-tag">
       <div class="hero-tag-dot"></div>
-      <span>Open to opportunities · Chennai</span>
+      <span>Open to opportunities · Product Companies · Fintech · India-scale UX</span>
     </div>
     <h1 class="hero-h1">Hey, I'm<br><span class="name">Sachin</span> ✦</h1>
     <p class="hero-sub">UX Designer crafting scalable, intuitive, and high-impact digital experiences.</p>
@@ -637,7 +658,7 @@ footer span { color: var(--lime); }
               <div class="case-impact-label">Reduction in task time</div>
             </div>
             <div class="case-btns">
-              <a href="razorpay-checkout-redesign__6_.html" target="_blank" class="case-btn case-btn-primary">View Case Study →</a>
+              <a href="https://razor-case-study.vercel.app/" target="_blank" class="case-btn case-btn-primary">View Case Study →</a>
               <a href="https://www.behance.net/sachinkumarm" target="_blank" class="case-btn case-btn-outline">Behance ↗</a>
             </div>
           </div>
@@ -691,7 +712,7 @@ footer span { color: var(--lime); }
             </div>
             <div class="case-btns">
               <a href="#" class="case-btn case-btn-primary" style="background:#a78bfa;">View System →</a>
-              <a href="https://www.behance.net/sachinkumarm" target="_blank" class="case-btn case-btn-outline">Behance ↗</a>
+              <a href="https://www.behance.net/gallery/241752241/Lumina-Design-System" target="_blank" target="_blank" class="case-btn case-btn-outline">Behance ↗</a>
             </div>
           </div>
         </div>
@@ -745,7 +766,7 @@ footer span { color: var(--lime); }
             </div>
             <div class="case-btns">
               <a href="gym-ux-casestudy__1_.html" target="_blank" class="case-btn case-btn-primary">View Case Study →</a>
-              <a href="https://www.behance.net/sachinkumarm" target="_blank" class="case-btn case-btn-outline">Behance ↗</a>
+              <a href="https://www.behance.net/gallery/246032005/RepTrack-Gym-Tracking-App-UX-Case-Study-for-India" target="_blank" class="case-btn case-btn-outline">Behance ↗</a>
             </div>
           </div>
         </div>
@@ -861,14 +882,14 @@ footer span { color: var(--lime); }
       <div class="ai-card">
         <div class="ai-icon">🤖</div>
         <div class="ai-card-title">Workflow Automation</div>
-        <div class="ai-card-text">Automating repetitive design tasks with n8n workflows — component documentation, asset exports, Confluence updates, and Jira ticket creation.</div>
-        <div class="ai-badge">n8n · Make · Zapier</div>
+        <div class="ai-card-text">Streamlining repetitive design ops using AI — auto-generating component documentation, organizing handoff specs, and using AI chat to accelerate Confluence updates and sprint prep. Cutting admin time to focus on actual design.</div>
+        <div class="ai-badge">Figma AI · Claude</div>
       </div>
       <div class="ai-card">
-        <div class="ai-icon">🔬</div>
-        <div class="ai-card-title">AI-Assisted Research</div>
-        <div class="ai-card-text">Synthesizing user interview transcripts, clustering pain points, and generating insight summaries using AI — from 40 hours of analysis to 4.</div>
-        <div class="ai-badge">Claude · Notion AI</div>
+         <div class="ai-icon">🔬</div>
+         <div class="ai-card-title">AI-Augmented Design Engineering</div>
+         <div class="ai-card-text">Built a production-quality HTML case study end-to-end using Claude as a design engineering partner — content architecture, coded output, and iteration. Reduced a multi-day build to hours without compromising craft.</div>
+         <div class="ai-badge">Claude · Cursor · Figma AI</div>
       </div>
       <div class="ai-card">
         <div class="ai-icon">🎨</div>
@@ -926,8 +947,8 @@ footer span { color: var(--lime); }
         <div class="about-text">
           <p>I'm a UX Designer at <strong>Tata Consultancy Services</strong>, where I've spent 2.5+ years redesigning enterprise-scale products in the health insurance domain for <strong>Cigna Healthcare</strong> — a platform serving 100,000+ users.</p>
           <p>What makes me different? I'm not just a pixel pusher. I think in <strong>systems</strong>, move in <strong>sprints</strong>, and speak the language of both users and engineers. My Figma files are developer-ready. My prototypes are stakeholder-ready. My metrics are business-ready.</p>
-          <p>I built a design system from scratch (<strong>Lumina</strong>), cut a checkout flow from 3 steps to 1 (<strong>Razorpay</strong>), and designed a gym app that finally makes sense for Indian users (<strong>RepTrack</strong>).</p>
-          <p>Right now, I'm looking to bring this product thinking to a fast-moving company — <strong>Swiggy, Razorpay, CRED, Zepto</strong> — wherever design can make the biggest dent.</p>
+          <p>I built a design system from scratch (<strong>Lumina</strong>), redesigned <strong>Razorpay's</strong> checkout failure states to reduce drop-off and double-charge anxiety, and designed a gym app that finally makes sense for Indian users (<strong>RepTrack</strong>).</p>
+          <p>Right now, I'm focused on solving problems in <strong>consumer fintech and enterprise UX</strong> — whether it's designing credit experiences for India's next generation of users or building scalable systems that improve productivity at enterprise scale.</p>
         </div>
       </div>
       <div class="skills-wrap">
@@ -952,14 +973,14 @@ footer span { color: var(--lime); }
     <p class="contact-sub">Open to full-time UX roles at product-focused companies.<br>Chennai-based. Available immediately.</p>
     <a href="mailto:er_sachinkumarm@outlook.com" class="btn-primary" style="display:inline-flex;">Say Hello →</a>
     <div class="contact-links">
-      <a href="https://linkedin.com/in/sachin1720" target="_blank" class="contact-link">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+      <a href="https://linkedin.com/in/sachin1720" target="_blank"
+        style="color:var(--lime);text-decoration:none;border-bottom:1px solid rgba(197,241,53,0.3);">
         LinkedIn
       </a>
-      <a href="https://www.behance.net/sachinkumarm" target="_blank" class="contact-link">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M22 7h-7V5h7v2zm1.726 10c-.442 1.297-2.029 3-5.101 3-3.074 0-5.051-2.053-5.051-5.329 0-3.261 1.929-5.275 5.021-5.275 3.071 0 4.864 1.909 5.056 4.642.031.503.003 1.010-.01 1.545H15.67c.166 1.523.886 2.386 2.052 2.386 1.016 0 1.626-.545 1.92-1.330l2.084.361zm-4.924-3.381c-.105-1.285-.672-2.044-1.706-2.044-1.048 0-1.722.783-1.844 2.044h3.550zm-13.302 5.381H0V4h4.396c2.826 0 4.536 1.30 4.536 3.498 0 1.373-.688 2.375-1.755 2.867 1.29.432 2.098 1.488 2.098 2.994 0 2.454-1.777 3.641-4.375 3.641zm-1.946-6.234h2.175c1.271 0 1.959-.578 1.959-1.682 0-1.102-.69-1.654-1.942-1.654H3.554v3.336zm0 4.551h2.399c1.381 0 2.098-.617 2.098-1.822 0-1.185-.729-1.815-2.129-1.815H3.554v3.637z"/></svg>
-        Behance
-      </a>
+     <a href="https://www.behance.net/sachinkumarm" target="_blank"
+       style="color:var(--lime);text-decoration:none;border-bottom:1px solid rgba(197,241,53,0.3);">
+       Behance
+     </a>
       <a href="Sachin_Kumar_M.pdf" download class="contact-link">
         ↓ Resume PDF
       </a>
@@ -1082,6 +1103,21 @@ const impactObserver = new IntersectionObserver(entries => {
   });
 }, { threshold: 0.3 });
 if (impactSection) impactObserver.observe(impactSection);
+document.querySelectorAll('.ai-card').forEach(card => {
+  document.addEventListener('mousemove', e => {
+    const rect = card.getBoundingClientRect();
+    const isNear =
+      e.clientX > rect.left - 64 && e.clientX < rect.right + 64 &&
+      e.clientY > rect.top - 64 && e.clientY < rect.bottom + 64;
+    card.style.setProperty('--active', isNear ? '1' : '0');
+    if (isNear) {
+      const cx = rect.left + rect.width / 2;
+      const cy = rect.top + rect.height / 2;
+      const angle = Math.atan2(e.clientY - cy, e.clientX - cx) * 180 / Math.PI + 90;
+      card.style.setProperty('--start', angle);
+    }
+  });
+});
 </script>
 </body>
 </html>
