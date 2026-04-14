@@ -27,6 +27,11 @@
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+  a, button {
+  position: relative;
+  z-index: 2;
+}
+
 html { scroll-behavior: smooth; }
 
 body {
@@ -53,7 +58,7 @@ body {
   border: 1px solid rgba(197,241,53,0.4); border-radius: 50%;
   pointer-events: none; z-index: 9998;
   transform: translate(-50%,-50%);
-  transition: all 0.15s ease;
+  transition: all 0.15s ease;pointer-events: none !important;
 }
 body:hover #cursor { opacity: 1; }
 
@@ -337,7 +342,8 @@ position: relative;
 .case-btn {
   font-size: 12px; padding: 8px 16px; border-radius: 100px;
   text-decoration: none; font-family: var(--font-display); font-weight: 600;
-  transition: all 0.2s; cursor: pointer; border: none;
+  transition: all 0.2s; cursor: pointer; border: none; position: relative;
+  z-index: 10;
 }
 .case-btn-primary { background: var(--lime); color: #060608; }
 .case-btn-primary:hover { box-shadow: 0 8px 20px rgba(197,241,53,0.3); transform: translateY(-1px); }
