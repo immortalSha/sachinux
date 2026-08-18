@@ -1,0 +1,1242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sachin Kumar M — UX Designer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #060608;
+  --bg2: #0d0d10;
+  --bg3: #13131a;
+  --border: rgba(255,255,255,0.07);
+  --border-active: rgba(197,241,53,0.4);
+  --lime: #C5F135;
+  --lime-dim: rgba(197,241,53,0.12);
+  --lime-glow: rgba(197,241,53,0.05);
+  --text: #f0f0f0;
+  --text-muted: #666;
+  --text-dim: #999;
+  --radius: 16px;
+  --font-display: 'Manrope', sans-serif;
+  --font-body: 'Inter', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  a, button {
+  position: relative;
+  z-index: 2;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-weight: 400;
+  line-height: 1.6;
+  overflow-x: hidden;
+  cursor: none;
+}
+
+/* Custom cursor */
+#cursor {
+  position: fixed; width: 10px; height: 10px;
+  background: var(--lime); border-radius: 50%;
+  pointer-events: none; z-index: 9999;
+  transform: translate(-50%,-50%);
+  transition: transform 0.1s, width 0.2s, height 0.2s, opacity 0.2s;
+  mix-blend-mode: difference;
+}
+#cursor-trail {
+  position: fixed; width: 30px; height: 30px;
+  border: 1px solid rgba(197,241,53,0.4); border-radius: 50%;
+  pointer-events: none; z-index: 9998;
+  transform: translate(-50%,-50%);
+  transition: all 0.15s ease;pointer-events: none !important;
+}
+body:hover #cursor { opacity: 1; }
+
+/* Noise overlay */
+body::before {
+  content:''; position:fixed; inset:0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events:none; z-index:0; opacity:0.4;
+}
+
+/* NAV */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 20px 48px;
+  background: rgba(6,6,8,0.85);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+}
+.nav-logo {
+  font-family: var(--font-display); font-weight: 800; font-size: 18px;
+  color: var(--text); letter-spacing: -0.5px;
+}
+.nav-logo span { color: var(--lime); }
+.nav-links { display: flex; gap: 32px; align-items: center; }
+.nav-links a {
+  font-size: 13px; color: var(--text-muted); text-decoration: none;
+  letter-spacing: 0.05em; transition: color 0.2s;
+  font-family: var(--font-mono);
+}
+.nav-links a:hover { color: var(--lime); }
+.nav-cta {
+  background: var(--lime); color: #060608 !important;
+  padding: 8px 20px; border-radius: 100px;
+  font-family: var(--font-display) !important; font-weight: 700 !important;
+  font-size: 13px !important; letter-spacing: 0 !important;
+  transition: transform 0.2s, box-shadow 0.2s !important;
+}
+.nav-cta:hover { transform: translateY(-1px); box-shadow: 0 8px 24px rgba(197,241,53,0.3) !important; color: #060608 !important; }
+
+/* SECTIONS */
+section { position: relative; z-index: 1; }
+
+/* HERO */
+#hero {
+  min-height: 100vh;
+  display: grid; grid-template-columns: 1fr 1fr;
+  align-items: center;
+  padding: 120px 48px 80px;
+  gap: 48px;
+  overflow: hidden;
+}
+.hero-bg-glow {
+  position: absolute; width: 600px; height: 600px;
+  border-radius: 50%; background: radial-gradient(circle, rgba(197,241,53,0.06) 0%, transparent 70%);
+  top: -100px; right: -100px; pointer-events: none;
+}
+.hero-bg-grid {
+  position: absolute; inset: 0;
+  background-image: linear-gradient(rgba(197,241,53,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(197,241,53,0.03) 1px, transparent 1px);
+  background-size: 64px 64px;
+  pointer-events: none;
+}
+.hero-left { position: relative; z-index: 2; }
+.hero-tag {
+  display: inline-flex; align-items: center; gap: 8px;
+  border: 1px solid var(--border-active);
+  background: var(--lime-dim); border-radius: 100px;
+  padding: 6px 16px; margin-bottom: 28px;
+}
+.hero-tag-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--lime); animation: pulse 2s infinite; }
+@keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(0.8)} }
+.hero-tag span { font-size: 12px; color: var(--lime); font-family: var(--font-mono); }
+.hero-h1 {
+  font-family: var(--font-display); font-size: clamp(42px, 5vw, 72px);
+  font-weight: 800; line-height: 1.0; letter-spacing: -2px;
+  margin-bottom: 20px;
+}
+.hero-h1 .name { color: var(--lime); }
+.hero-sub {
+  font-size: clamp(16px, 1.8vw, 20px); color: var(--text-dim);
+  max-width: 440px; line-height: 1.6; font-weight: 300;
+  margin-bottom: 12px;
+}
+.hero-tagline {
+  font-family: var(--font-mono); font-size: 13px; color: var(--text-muted);
+  border-left: 2px solid var(--lime); padding-left: 14px;
+  margin-bottom: 40px;
+}
+.hero-btns { display: flex; gap: 12px; flex-wrap: wrap; }
+.btn-primary {
+  background: var(--lime); color: #060608;
+  padding: 14px 28px; border-radius: 100px;
+  font-family: var(--font-display); font-weight: 700; font-size: 14px;
+  text-decoration: none; border: none; cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s; display: inline-flex; align-items: center; gap: 8px;
+}
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(197,241,53,0.35); }
+.btn-secondary {
+  background: transparent; color: var(--text);
+  padding: 14px 28px; border-radius: 100px;
+  font-family: var(--font-display); font-weight: 600; font-size: 14px;
+  text-decoration: none; border: 1px solid var(--border);
+  cursor: pointer; transition: all 0.2s; display: inline-flex; align-items: center; gap: 8px;
+}
+.btn-secondary:hover { border-color: var(--lime); color: var(--lime); }
+.hero-stats { display: flex; gap: 36px; margin-top: 48px; padding-top: 36px; border-top: 1px solid var(--border); }
+.hero-stat-val { font-family: var(--font-display); font-size: 28px; font-weight: 800; color: var(--text); }
+.hero-stat-val span { color: var(--lime); }
+.hero-stat-label { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+
+/* Avatar */
+.hero-right { position: relative; z-index: 2; display: flex; justify-content: center; align-items: center; }
+.avatar-wrap {
+position: relative;
+  display: flex;
+  justify-content: center;
+  animation: float 6s ease-in-out infinite;
+}
+.avatar-glow {
+  position: absolute; width: 400px; height: 400px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(197,241,53,0.15) 0%, transparent 70%);
+  animation: float 6s ease-in-out infinite;
+}
+@keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-16px)} }
+.avatar-img {
+  width: 380px; height: 380px; object-fit: cover; object-position: top;
+  border-radius: 50%;
+  border: 2px solid var(--border-active);
+  box-shadow: 0 0 80px rgba(197,241,53,0.15), inset 0 0 40px rgba(197,241,53,0.05);
+  position: relative; z-index: 2;
+
+  transition: transform 0.2s ease;
+  transform-style: preserve-3d;
+
+}
+.avatar-ring {
+  position: absolute; width: 420px; height: 420px; border-radius: 50%;
+  border: 1px dashed rgba(197,241,53,0.2);
+  animation: spin 20s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.avatar-badge {
+  position: absolute; bottom: 20px; right: 0; z-index: 3;
+  background: var(--bg3); border: 1px solid var(--border);
+  border-radius: 12px; padding: 12px 16px;
+  display: flex; align-items: center; gap: 10px;
+  backdrop-filter: blur(10px);
+}
+.badge-dot { width: 8px; height: 8px; border-radius: 50%; background: #22c55e; animation: pulse 2s infinite; }
+.badge-text { font-size: 12px; color: var(--text-dim); font-family: var(--font-mono); }
+/* COMET CARD FULL STYLE */
+.comet-card {
+  perspective: 1000px;
+  display: flex;
+  justify-content: center;
+}
+
+.comet-inner {
+  width: 320px;
+  border-radius: 20px;
+  background: #1a1a1a;
+  padding: 12px;
+  transition: transform 0.12s ease;
+  transform-style: preserve-3d;
+}
+  .comet-inner:hover {
+  transform: scale(1.04);
+}
+
+.comet-image {
+  width: 100%;
+  aspect-ratio: 3/4;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.comet-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: contrast(0.8);
+}
+
+.comet-footer {
+  display: flex;
+  justify-content: space-between;
+  padding: 14px;
+  font-family: monospace;
+  font-size: 12px;
+  color: #fff;
+}
+
+.comet-footer span:last-child {
+  color: #888;
+}
+
+/* Cursor glow */
+.comet-glow {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  background: radial-gradient(circle at center, rgba(197,241,53,0.25), transparent 60%);
+  z-index: 1;
+}
+
+.comet-card:hover .comet-glow {
+  opacity: 1;
+}
+
+/* MARQUEE */
+.marquee-wrap {
+  overflow: hidden; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+  padding: 16px 0; background: var(--bg2);
+}
+.marquee-track {
+  display: flex; gap: 48px; width: max-content;
+  animation: marquee 20s linear infinite;
+}
+@keyframes marquee { to { transform: translateX(-50%); } }
+.marquee-item { font-family: var(--font-display); font-size: 13px; font-weight: 600; color: var(--text-muted); letter-spacing: 0.1em; text-transform: uppercase; white-space: nowrap; display: flex; align-items: center; gap: 16px; }
+.marquee-dot { color: var(--lime); font-size: 20px; }
+
+/* SECTION COMMON */
+.section-wrap { padding: 100px 48px; max-width: 1200px; margin: 0 auto; }
+.section-label {
+  font-family: var(--font-mono); font-size: 11px; color: var(--lime);
+  letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 12px;
+  display: flex; align-items: center; gap: 10px;
+}
+.section-label::before { content: ''; display: block; width: 24px; height: 1px; background: var(--lime); }
+.section-title {
+  font-family: var(--font-display); font-size: clamp(32px, 4vw, 52px);
+  font-weight: 800; letter-spacing: -1.5px; line-height: 1.1;
+  margin-bottom: 16px;
+}
+.section-title .hl { color: var(--lime); }
+.section-sub { font-size: 16px; color: var(--text-muted); max-width: 500px; font-weight: 300; }
+
+/* WORK */
+#work { background: var(--bg); }
+.work-tabs { display: flex; gap: 4px; margin: 48px 0 0; border-bottom: 1px solid var(--border); }
+.work-tab {
+  font-family: var(--font-display); font-size: 14px; font-weight: 600;
+  padding: 12px 24px; color: var(--text-muted); cursor: pointer;
+  border: none; background: transparent;
+  border-bottom: 2px solid transparent; margin-bottom: -1px;
+  transition: all 0.2s; white-space: nowrap;
+}
+.work-tab.active { color: var(--lime); border-bottom-color: var(--lime); }
+.work-tab:hover:not(.active) { color: var(--text-dim); }
+
+.work-panel { display: none; animation: fadeIn 0.4s ease; }
+.work-panel.active { display: grid; grid-template-columns: 1fr 1fr; gap: 0; margin-top: 48px; }
+@keyframes fadeIn { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
+
+.case-preview {
+  background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius);
+  overflow: hidden; position: relative;
+}
+.case-preview-inner {
+  padding: 40px; height: 400px; display: flex; flex-direction: column; justify-content: space-between;
+  position: relative; overflow: hidden;
+}
+.case-preview-bg {
+  position: absolute; inset: 0; opacity: 0.08;
+  background: linear-gradient(135deg, var(--lime) 0%, transparent 60%);
+}
+.case-num { font-family: var(--font-mono); font-size: 11px; color: var(--text-muted); margin-bottom: 16px; }
+.case-title { font-family: var(--font-display); font-size: 28px; font-weight: 800; letter-spacing: -0.5px; line-height: 1.1; }
+.case-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 12px; }
+.case-tag { font-size: 11px; padding: 4px 10px; border-radius: 100px; border: 1px solid var(--border); color: var(--text-muted); }
+.case-impact { margin-top: 20px; }
+.case-impact-val { font-family: var(--font-display); font-size: 36px; font-weight: 800; color: var(--lime); }
+.case-impact-label { font-size: 12px; color: var(--text-muted); }
+.case-btns { display: flex; gap: 8px; margin-top: 24px; flex-wrap: wrap; }
+.case-btn {
+  font-size: 12px; padding: 8px 16px; border-radius: 100px;
+  text-decoration: none; font-family: var(--font-display); font-weight: 600;
+  transition: all 0.2s; cursor: pointer; border: none; position: relative;
+  z-index: 10;
+}
+.case-btn-primary { background: var(--lime); color: #060608; }
+.case-btn-primary:hover { box-shadow: 0 8px 20px rgba(197,241,53,0.3); transform: translateY(-1px); }
+.case-btn-outline { background: transparent; color: var(--text-dim); border: 1px solid var(--border); }
+.case-btn-outline:hover { border-color: var(--lime); color: var(--lime); }
+
+.case-detail {
+  padding: 40px; border-left: 1px solid var(--border);
+  display: flex; flex-direction: column; gap: 28px;
+}
+.case-section-title { font-family: var(--font-mono); font-size: 10px; color: var(--lime); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 10px; }
+.case-text { font-size: 14px; color: var(--text-dim); line-height: 1.7; font-weight: 300; }
+.case-metrics { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.case-metric { background: var(--bg3); border: 1px solid var(--border); border-radius: 10px; padding: 16px; }
+.case-metric-val { font-family: var(--font-display); font-size: 22px; font-weight: 800; color: var(--lime); }
+.case-metric-label { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+.process-steps { display: flex; flex-direction: column; gap: 8px; }
+.process-step { display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--text-dim); }
+.process-step-num { width: 24px; height: 24px; border-radius: 50%; border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 10px; font-family: var(--font-mono); color: var(--lime); flex-shrink: 0; }
+
+/* IMPACT */
+#impact { background: var(--bg2); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+.impact-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--border); margin-top: 48px; border-radius: var(--radius); overflow: hidden; }
+.impact-card {
+  background: var(--bg); padding: 36px 28px;
+  transition: background 0.3s;
+}
+.impact-card:hover { background: var(--bg3); }
+.impact-num { font-family: var(--font-display); font-size: 48px; font-weight: 800; color: var(--lime); line-height: 1; margin-bottom: 8px; }
+.impact-desc { font-size: 14px; color: var(--text-muted); line-height: 1.5; }
+.impact-sub { font-size: 12px; color: var(--text-muted); margin-top: 8px; font-family: var(--font-mono); opacity: 0.5; }
+
+/* VIDEOS */
+#motion { background: var(--bg); }
+.video-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 48px; }
+.video-card {
+  position: relative; background: var(--bg2); border: 1px solid var(--border);
+  border-radius: var(--radius); overflow: hidden; cursor: pointer;
+  aspect-ratio: 9/16; transition: border-color 0.3s, transform 0.3s;
+}
+.video-card:hover { border-color: var(--lime); transform: scale(1.02); }
+.video-card video { width: 100%; height: 100%; object-fit: cover; pointer-events: none; }
+.video-overlay {
+  position: absolute; inset: 0; background: linear-gradient(to top, rgba(6,6,8,0.9) 0%, transparent 50%);
+  display: flex; flex-direction: column; justify-content: flex-end; padding: 20px;
+  opacity: 0; transition: opacity 0.3s;
+}
+.video-card:hover .video-overlay { opacity: 1; }
+.video-play {
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+  width: 52px; height: 52px; border-radius: 50%;
+  background: rgba(197,241,53,0.9); display: flex; align-items: center; justify-content: center;
+  font-size: 18px; transition: transform 0.2s;
+}
+.video-card:hover .video-play { transform: translate(-50%,-50%) scale(1.1); }
+.video-title { font-family: var(--font-display); font-size: 14px; font-weight: 700; color: var(--text); }
+.video-sub { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+
+/* MODAL */
+.modal-bg {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 1000;
+  display: none; align-items: center; justify-content: center;
+  backdrop-filter: blur(10px);
+}
+.modal-bg.open { display: flex; }
+.modal-video { width: 90vw; max-width: 500px; border-radius: 16px; overflow: hidden; }
+.modal-video video { width: 100%; border-radius: 16px; }
+.modal-close {
+  position: absolute; top: 24px; right: 24px;
+  width: 44px; height: 44px; border-radius: 50%;
+  background: var(--bg3); border: 1px solid var(--border);
+  color: var(--text); font-size: 20px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+}
+
+/* AI SECTION */
+#ai { background: var(--bg2); }
+.ai-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 48px; }
+.ai-card {
+  background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 28px; transition: all 0.3s; position: relative; overflow: hidden;
+}
+.ai-card::before {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(135deg, var(--lime-glow) 0%, transparent 60%);
+  opacity: 0; transition: opacity 0.3s;
+}
+.ai-card:hover { border-color: var(--border-active); }
+.ai-card:hover::before { opacity: 1; }
+.ai-icon { font-size: 32px; margin-bottom: 16px; }
+.ai-card-title { font-family: var(--font-display); font-size: 18px; font-weight: 700; margin-bottom: 8px; }
+.ai-card-text { font-size: 14px; color: var(--text-muted); line-height: 1.6; font-weight: 300; }
+.ai-badge { display: inline-block; font-size: 11px; padding: 3px 10px; border-radius: 100px; border: 1px solid var(--border-active); color: var(--lime); font-family: var(--font-mono); margin-top: 12px; }
+  .ai-card {
+  --active: 0;
+  --start: 0;
+}
+.ai-card::after {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: var(--radius);
+  border: 1px solid transparent;
+  background: conic-gradient(
+    from calc((var(--start) - 40) * 1deg) at 50% 50%,
+    #dd7bbb, #d79f1e, #5a922c, #4c7894, #dd7bbb
+  ) border-box;
+  -webkit-mask: linear-gradient(#000 0 0) padding-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: destination-out;
+  mask-composite: exclude;
+  opacity: var(--active);
+  transition: opacity 0.3s;
+  pointer-events: none;
+}
+
+/* HOW I WORK */
+#system { background: var(--bg); }
+.hiw-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 48px; }
+.hiw-card {
+  position: relative; aspect-ratio: 3/4;
+  border: 1px solid var(--border); border-radius: var(--radius);
+  overflow: hidden; background: var(--bg2);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; transition: border-color 0.3s;
+}
+.hiw-card:hover { border-color: var(--border-active); }
+
+.hiw-corner { position: absolute; width: 14px; height: 14px; color: var(--text-muted); opacity: 0.5; z-index: 3; }
+.hiw-corner.tl { top: 12px; left: 12px; }
+.hiw-corner.tr { top: 12px; right: 12px; }
+.hiw-corner.bl { bottom: 12px; left: 12px; }
+.hiw-corner.br { bottom: 12px; right: 12px; }
+
+.hiw-canvas-wrap { position: absolute; inset: 0; opacity: 0; transition: opacity 0.4s ease; z-index: 1; }
+.hiw-card.hovered .hiw-canvas-wrap { opacity: 1; }
+.hiw-canvas-wrap canvas { width: 100%; height: 100%; display: block; }
+.hiw-fade { position: absolute; inset: 0; background: radial-gradient(circle at center, transparent 20%, rgba(6,6,8,0.9) 100%); }
+
+.hiw-content { position: relative; z-index: 2; text-align: center; padding: 24px; }
+.hiw-icon-badge {
+  width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center; margin: 0 auto 16px;
+  font-family: var(--font-mono); font-size: 13px; color: var(--lime);
+  transition: all 0.3s ease;
+}
+.hiw-card.hovered .hiw-icon-badge { opacity: 0; transform: translateY(-16px); }
+.hiw-title {
+  font-family: var(--font-display); font-weight: 800; font-size: 19px; color: var(--text);
+  opacity: 0.85; transform: translateY(6px); transition: all 0.3s ease;
+}
+.hiw-card.hovered .hiw-title { opacity: 1; transform: translateY(0); color: #fff; }
+.hiw-desc {
+  font-size: 12px; color: rgba(255,255,255,0.75); margin-top: 10px;
+  opacity: 0; transition: opacity 0.3s ease 0.1s; line-height: 1.6; font-weight: 300;
+}
+.hiw-card.hovered .hiw-desc { opacity: 1; }
+
+.spec-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 36px; }
+.spec-chip {
+  font-size: 12px; padding: 8px 16px; border-radius: 100px;
+  border: 1px solid var(--border-active); color: var(--lime);
+  font-family: var(--font-mono); background: var(--lime-dim);
+}
+.spec-label { font-family: var(--font-mono); font-size: 11px; color: var(--text-muted); letter-spacing: 0.1em; text-transform: uppercase; width: 100%; margin-bottom: 4px; }
+
+@media (max-width: 768px) {
+  .hiw-grid { grid-template-columns: 1fr 1fr; }
+}
+
+  
+/* ABOUT */
+#about { background: var(--bg2); }
+.about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: start; margin-top: 48px; }
+.about-text { font-size: 16px; color: var(--text-dim); line-height: 1.8; font-weight: 300; }
+.about-text p { margin-bottom: 20px; }
+.about-text strong { color: var(--text); font-weight: 500; }
+.skills-wrap { display: flex; flex-direction: column; gap: 12px; }
+.skill-row { display: flex; align-items: center; gap: 12px; }
+.skill-label { font-family: var(--font-mono); font-size: 12px; color: var(--text-muted); width: 120px; flex-shrink: 0; }
+.skill-bar { flex: 1; height: 4px; background: var(--bg3); border-radius: 2px; overflow: hidden; }
+.skill-fill { height: 100%; background: var(--lime); border-radius: 2px; transform-origin: left; animation: fillBar 1.5s ease forwards; transform: scaleX(0); }
+@keyframes fillBar { to { transform: scaleX(1); } }
+.skill-pct { font-size: 12px; color: var(--text-muted); font-family: var(--font-mono); width: 36px; text-align: right; }
+
+/* CONTACT */
+#contact { background: var(--bg); text-align: center; }
+.contact-inner { max-width: 640px; margin: 0 auto; padding: 100px 48px; }
+.contact-big {
+  font-family: var(--font-display); font-size: clamp(36px, 5vw, 64px);
+  font-weight: 800; letter-spacing: -2px; line-height: 1.1; margin-bottom: 20px;
+}
+.contact-big .hl { color: var(--lime); }
+.contact-sub { font-size: 16px; color: var(--text-muted); margin-bottom: 40px; font-weight: 300; }
+.contact-links { display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; margin-top: 32px; }
+.contact-link {
+  display: flex; align-items: center; gap: 8px;
+  padding: 12px 20px; border-radius: 100px; border: 1px solid var(--border);
+  color: var(--text-dim); text-decoration: none; font-size: 13px;
+  font-family: var(--font-mono); transition: all 0.2s;
+}
+.contact-link:hover { border-color: var(--lime); color: var(--lime); }
+
+/* FOOTER */
+footer {
+  border-top: 1px solid var(--border); padding: 24px 48px;
+  display: flex; justify-content: space-between; align-items: center;
+  font-size: 12px; color: var(--text-muted); font-family: var(--font-mono);
+}
+footer span { color: var(--lime); }
+
+/* SCROLL REVEAL */
+.reveal { opacity: 0; transform: translateY(30px); transition: all 0.7s ease; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+@media (max-width: 768px) {
+  nav { padding: 16px 20px; }
+  .nav-links { display: none; }
+  #hero { grid-template-columns: 1fr; padding: 100px 20px 60px; text-align: center; }
+  .hero-right { order: -1; }
+  .avatar-img { width: 200px; height: 200px; }
+  .avatar-ring { width: 240px; height: 240px; }
+  .avatar-glow { width: 240px; height: 240px; }
+  .section-wrap { padding: 60px 20px; }
+  .work-panel.active { grid-template-columns: 1fr; }
+  .case-detail { border-left: none; border-top: 1px solid var(--border); }
+  .impact-grid { grid-template-columns: 1fr 1fr; }
+  .video-grid { grid-template-columns: 1fr; }
+  .ai-grid, .hiw-grid, .about-grid { grid-template-columns: 1fr; }
+  .contact-inner { padding: 60px 20px; }
+  footer { flex-direction: column; gap: 8px; text-align: center; padding: 20px; }
+  .hero-stats { gap: 20px; flex-wrap: wrap; }
+}
+</style>
+</head>
+<body>
+
+<div id="cursor"></div>
+<div id="cursor-trail"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">Sachin<span>.</span></div>
+  <div class="nav-links">
+    <a href="#work">Work</a>
+    <a href="#impact">Impact</a>
+    <a href="#ai">AI in UX</a>
+    <a href="#about">About</a>
+    <a href="Sachin_Kumar_M_10.07.2026.pdf" download class="nav-cta">Resume ↓</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg-grid"></div>
+  <div class="hero-bg-glow"></div>
+  <div class="hero-left reveal">
+    <div class="hero-tag">
+      <div class="hero-tag-dot"></div>
+      <span>Open to opportunities · Product Companies · Fintech · India-scale UX</span>
+    </div>
+    <h1 class="hero-h1">Hey, I'm<br><span class="name">Sachin</span> ✦</h1>
+    <p class="hero-sub">UX Designer crafting scalable, intuitive, and high-impact digital experiences.</p>
+    <p class="hero-tagline">I turn complex problems into simple, usable products.</p>
+    <div class="hero-btns">
+      <a href="#work" class="btn-primary">View Work →</a>
+      <a href="Sachin_Kumar_M_10.07.2026.pdf" download class="btn-secondary">↓ Resume</a>
+      <a href="#contact" class="btn-secondary">Let's Connect</a>
+    </div>
+    <div class="hero-stats">
+      <div>
+        <div class="hero-stat-val"><span>28%</span></div>
+        <div class="hero-stat-label">Task completion ↑</div>
+      </div>
+      <div>
+        <div class="hero-stat-val"><span>2.5+</span> yrs</div>
+        <div class="hero-stat-label">Enterprise UX</div>
+      </div>
+      <div>
+        <div class="hero-stat-val"><span>150+</span></div>
+        <div class="hero-stat-label">Components built</div>
+      </div>
+    </div>
+  </div>
+  <div class="hero-right reveal">
+ <div class="comet-card">
+  <div class="comet-inner">
+    
+    <div class="comet-image">
+      <img src="1775600959381.png" alt="Sachin Kumar">
+    </div>
+
+    <div class="comet-footer">
+      <span>UX Designer</span>
+      <span>#TCS</span>
+    </div>
+
+  </div>
+</div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <span class="marquee-item">Figma Expert <span class="marquee-dot">✦</span></span>
+    <span class="marquee-item">Design Systems <span class="marquee-dot">✦</span></span>
+    <span class="marquee-item">User Research <span class="marquee-dot">✦</span></span>
+    <span class="marquee-item">Frontend-Aware <span class="marquee-dot">✦</span></span>
+    <span class="marquee-item">Product Thinking <span class="marquee-dot">✦</span></span>
+    <span class="marquee-item">WCAG 2.1 AA <span class="marquee-dot">✦</span></span>
+    <span class="marquee-item">Dev Handoff <span class="marquee-dot">✦</span></span>
+    <span class="marquee-item">Figma Expert <span class="marquee-dot">✦</span></span>
+    <span class="marquee-item">Design Systems <span class="marquee-dot">✦</span></span>
+    <span class="marquee-item">User Research <span class="marquee-dot">✦</span></span>
+    <span class="marquee-item">Motion Design <span class="marquee-dot">✦</span></span>
+    <span class="marquee-item">Frontend-Aware <span class="marquee-dot">✦</span></span>
+    <span class="marquee-item">Product Thinking <span class="marquee-dot">✦</span></span>
+    <span class="marquee-item">WCAG 2.1 AA <span class="marquee-dot">✦</span></span>
+    <span class="marquee-item">Dev Handoff <span class="marquee-dot">✦</span></span>
+  </div>
+</div>
+
+<!-- WORK -->
+<section id="work">
+  <div class="section-wrap">
+    <div class="reveal">
+      <div class="section-label">Selected Work</div>
+      <h2 class="section-title">Case <span class="hl">Studies</span></h2>
+      <p class="section-sub">Deep product thinking. Measurable outcomes. Built for scale.</p>
+    </div>
+    <div class="work-tabs">
+      <button class="work-tab active" onclick="switchTab('pharmacy', this)">01 — Pharmacy System</button>
+      <button class="work-tab" onclick="switchTab('designsystem', this)">02 — Design System</button>
+      <button class="work-tab" onclick="switchTab('reptrack', this)">03 — RepTrack</button>
+    </div>
+
+    <!-- PHARMACY SYSTEM -->
+    <div id="tab-pharmacy" class="work-panel active">
+      <div class="case-preview">
+        <div class="case-preview-inner">
+          <div class="case-preview-bg"></div>
+          <div>
+            <div class="case-num">Case Study / 01</div>
+            <div class="case-title">Pharmacy<br>Management<br>System</div>
+            <div class="case-tags">
+              <span class="case-tag">Healthcare</span>
+              <span class="case-tag">Enterprise UX</span>
+              <span class="case-tag">POS Design</span>
+              <span class="case-tag">Inventory</span>
+            </div>
+          </div>
+          <div>
+            <div class="case-impact">
+              <div class="case-impact-val">3</div>
+              <div class="case-impact-label">End-to-end flows shipped</div>
+            </div>
+            <div class="case-btns">
+              <a href="https://pharmacy-system-snowy.vercel.app/" target="_blank" class="case-btn case-btn-primary">View Case Study →</a>
+              <a href="https://www.behance.net/sachinkumarm" target="_blank" class="case-btn case-btn-outline">Behance ↗</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="case-detail">
+        <div>
+          <div class="case-section-title">Problem</div>
+          <div class="case-text">An enterprise pharmacy platform needed safety-critical protection against expired-medicine sales, clear prioritization for inventory alerts, and a reliable way to track supplier balances — three very different flows that still needed to feel like one product.</div>
+        </div>
+        <div>
+          <div class="case-section-title">What Was Designed</div>
+          <div class="case-metrics">
+            <div class="case-metric"><div class="case-metric-val">POS</div><div class="case-metric-label">Expired-medicine block</div></div>
+            <div class="case-metric"><div class="case-metric-val">Alerts</div><div class="case-metric-label">Prioritized inventory dashboard</div></div>
+            <div class="case-metric"><div class="case-metric-val">Ledger</div><div class="case-metric-label">Supplier balance module</div></div>
+            <div class="case-metric"><div class="case-metric-val">1</div><div class="case-metric-label">Shared design system</div></div>
+          </div>
+        </div>
+        <div>
+          <div class="case-section-title">Process</div>
+          <div class="process-steps">
+            <div class="process-step"><div class="process-step-num">1</div>Mapped safety-critical vs. everyday flows</div>
+            <div class="process-step"><div class="process-step-num">2</div>Built a shared component &amp; status-pattern system</div>
+            <div class="process-step"><div class="process-step-num">3</div>Designed onboarding &amp; cross-device scaling</div>
+            <div class="process-step"><div class="process-step-num">4</div>Calibrated friction for irreversible actions</div>
+            <div class="process-step"><div class="process-step-num">5</div>Documented edge cases &amp; handoff rationale</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DESIGN SYSTEM -->
+    <div id="tab-designsystem" class="work-panel">
+      <div class="case-preview">
+        <div class="case-preview-inner" style="background: var(--bg3);">
+          <div class="case-preview-bg" style="background: linear-gradient(135deg, rgba(147,112,219,0.2) 0%, transparent 60%);"></div>
+          <div>
+            <div class="case-num">Case Study / 02</div>
+            <div class="case-title">Healthcare<br>Design<br>System</div>
+            <div class="case-tags">
+              <span class="case-tag">Design System</span>
+              <span class="case-tag">Components</span>
+              <span class="case-tag">Tokens</span>
+              <span class="case-tag">Scale</span>
+            </div>
+          </div>
+          <div>
+            <div class="case-impact">
+              <div class="case-impact-val" style="color:#a78bfa;">150+</div>
+              <div class="case-impact-label">Components shipped</div>
+            </div>
+            <div class="case-btns">
+              <a href="https://design-system-two-mocha.vercel.app/" target="_blank" class="case-btn case-btn-primary" style="background:#a78bfa;">View System →</a>
+              <a href="https://www.behance.net/gallery/241752241/Lumina-Design-System" target="_blank" class="case-btn case-btn-outline">Behance ↗</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="case-detail">
+        <div>
+          <div class="case-section-title">Challenge</div>
+          <div class="case-text">No unified design language across 12 product modules. Engineers and designers working in silos, inconsistent components, zero token documentation. Pega → AWS migration requiring a complete system rethink.</div>
+        </div>
+        <div>
+          <div class="case-section-title">Impact</div>
+          <div class="case-metrics">
+            <div class="case-metric"><div class="case-metric-val" style="color:#a78bfa;">12</div><div class="case-metric-label">Product modules unified</div></div>
+            <div class="case-metric"><div class="case-metric-val" style="color:#a78bfa;">150+</div><div class="case-metric-label">Components</div></div>
+            <div class="case-metric"><div class="case-metric-val" style="color:#a78bfa;">1000+</div><div class="case-metric-label">Variants</div></div>
+            <div class="case-metric"><div class="case-metric-val" style="color:#a78bfa;">100K+</div><div class="case-metric-label">Users served</div></div>
+          </div>
+        </div>
+        <div>
+          <div class="case-section-title">System Stack</div>
+          <div class="process-steps">
+            <div class="process-step"><div class="process-step-num" style="color:#a78bfa;border-color:#a78bfa40;">1</div>Token architecture (color, spacing, type)</div>
+            <div class="process-step"><div class="process-step-num" style="color:#a78bfa;border-color:#a78bfa40;">2</div>Component library with auto layout</div>
+            <div class="process-step"><div class="process-step-num" style="color:#a78bfa;border-color:#a78bfa40;">3</div>Multi-theme support (light/dark)</div>
+            <div class="process-step"><div class="process-step-num" style="color:#a78bfa;border-color:#a78bfa40;">4</div>WCAG 2.1 AA accessibility baked in</div>
+            <div class="process-step"><div class="process-step-num" style="color:#a78bfa;border-color:#a78bfa40;">5</div>Figma Inspect + Confluence docs</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- REPTRACK -->
+    <div id="tab-reptrack" class="work-panel">
+      <div class="case-preview">
+        <div class="case-preview-inner" style="background: var(--bg3);">
+          <div class="case-preview-bg" style="background: linear-gradient(135deg, rgba(197,241,53,0.15) 0%, transparent 60%);"></div>
+          <div>
+            <div class="case-num">Case Study / 03</div>
+            <div class="case-title">RepTrack<br>Fitness<br>App</div>
+            <div class="case-tags">
+              <span class="case-tag">End-to-End UX</span>
+              <span class="case-tag">Mobile</span>
+              <span class="case-tag">Android</span>
+              <span class="case-tag">India Market</span>
+            </div>
+          </div>
+          <div>
+            <div class="case-impact">
+              <div class="case-impact-val">73%</div>
+              <div class="case-impact-label">Week-1 drop-off addressed</div>
+            </div>
+            <div class="case-btns">
+              <a href="gym-ux-casestudy__1_.html" target="_blank" class="case-btn case-btn-primary">View Case Study →</a>
+              <a href="https://www.behance.net/gallery/246032005/RepTrack-Gym-Tracking-App-UX-Case-Study-for-India" target="_blank" class="case-btn case-btn-outline">Behance ↗</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="case-detail">
+        <div>
+          <div class="case-section-title">Problem</div>
+          <div class="case-text">73% of Indian gym users drop off within week 1. Existing apps are cluttered, require internet, and too slow to log during a 60-second rest window. Designed for the Indian context — offline-first, 2-tap logging.</div>
+        </div>
+        <div>
+          <div class="case-section-title">Key Metrics</div>
+          <div class="case-metrics">
+            <div class="case-metric"><div class="case-metric-val">2-tap</div><div class="case-metric-label">Set logging target</div></div>
+            <div class="case-metric"><div class="case-metric-val">12 PRs</div><div class="case-metric-label">Tracked per user/mo</div></div>
+            <div class="case-metric"><div class="case-metric-val">60s</div><div class="case-metric-label">Rest window design</div></div>
+            <div class="case-metric"><div class="case-metric-val">100%</div><div class="case-metric-label">Offline-first</div></div>
+          </div>
+        </div>
+        <div>
+          <div class="case-section-title">Process</div>
+          <div class="process-steps">
+            <div class="process-step"><div class="process-step-num">1</div>User interviews at local gyms</div>
+            <div class="process-step"><div class="process-step-num">2</div>Pain point mapping & personas</div>
+            <div class="process-step"><div class="process-step-num">3</div>Low-fi → High-fi Figma prototype</div>
+            <div class="process-step"><div class="process-step-num">4</div>Micro-interactions & transitions</div>
+            <div class="process-step"><div class="process-step-num">5</div>Usability testing & iteration</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- IMPACT -->
+<section id="impact">
+  <div class="section-wrap reveal">
+    <div class="section-label">Measurable Results</div>
+    <h2 class="section-title">Design that <span class="hl">Moves</span> Numbers</h2>
+    <p class="section-sub">Every decision backed by data. Every pixel justified by outcomes.</p>
+    <div class="impact-grid">
+      <div class="impact-card">
+        <div class="impact-num">28%</div>
+        <div class="impact-desc">Task completion improvement across health insurance platform</div>
+        <div class="impact-sub">Cigna · TCS · 2024</div>
+      </div>
+      <div class="impact-card">
+        <div class="impact-num">35%</div>
+        <div class="impact-desc">Reduction in user onboarding time through iterative testing</div>
+        <div class="impact-sub">Platform Redesign · 2024</div>
+      </div>
+      <div class="impact-card">
+        <div class="impact-num">40%</div>
+        <div class="impact-desc">Faster developer handoff with the Healthcare Design System</div>
+        <div class="impact-sub">Design System · 2024</div>
+      </div>
+      <div class="impact-card">
+        <div class="impact-num">3</div>
+        <div class="impact-desc">Safety-critical pharmacy flows shipped end-to-end</div>
+        <div class="impact-sub">Case Study · 2024</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- AI IN UX -->
+<section id="ai">
+  <div class="section-wrap reveal">
+    <div class="section-label">Future-Ready</div>
+    <h2 class="section-title">AI in <span class="hl">UX</span></h2>
+    <p class="section-sub">Practical AI workflows that make design faster, smarter, and more impactful.</p>
+    <div class="ai-grid">
+      <div class="ai-card">
+        <div class="ai-icon">⚡</div>
+        <div class="ai-card-title">Prompt-Based Design</div>
+        <div class="ai-card-text">Using AI prompts to rapidly generate wireframe variations, copy alternatives, and UX flows — cutting ideation time from days to hours.</div>
+        <div class="ai-badge">Figma AI · GPT-4</div>
+      </div>
+      <div class="ai-card">
+        <div class="ai-icon">🤖</div>
+        <div class="ai-card-title">Workflow Automation</div>
+        <div class="ai-card-text">Streamlining repetitive design ops using AI — auto-generating component documentation, organizing handoff specs, and using AI chat to accelerate Confluence updates and sprint prep. Cutting admin time to focus on actual design.</div>
+        <div class="ai-badge">Figma AI · Claude</div>
+      </div>
+      <div class="ai-card">
+         <div class="ai-icon">🔬</div>
+         <div class="ai-card-title">AI-Augmented Design Engineering</div>
+         <div class="ai-card-text">Built a production-quality HTML case study end-to-end using Claude as a design engineering partner — content architecture, coded output, and iteration. Reduced a multi-day build to hours without compromising craft.</div>
+         <div class="ai-badge">Claude · Cursor · Figma AI</div>
+      </div>
+      <div class="ai-card">
+        <div class="ai-icon">🎨</div>
+        <div class="ai-card-title">Faster Prototyping</div>
+        <div class="ai-card-text">AI-generated component variants, color token suggestions, and accessibility checks integrated directly into the Figma design workflow.</div>
+        <div class="ai-badge">Figma Plugins · AI</div>
+      </div>
+    </div>
+  </div>
+</section>
+  
+<!-- HOW I WORK -->
+<section id="system" style="border-top: 1px solid var(--border);">
+  <div class="section-wrap reveal">
+    <div class="section-label">How I Work</div>
+    <h2 class="section-title">My <span class="hl">Process</span></h2>
+    <p class="section-sub">An end-to-end product design process — from discovery to measurable outcomes.</p>
+
+    <div class="hiw-grid">
+      <div class="hiw-card" data-colors="34,197,94|16,185,129">
+        <div class="hiw-canvas-wrap"><canvas></canvas><div class="hiw-fade"></div></div>
+        <svg class="hiw-corner tl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 6v12m6-6H6"/></svg>
+        <svg class="hiw-corner tr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 6v12m6-6H6"/></svg>
+        <svg class="hiw-corner bl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 6v12m6-6H6"/></svg>
+        <svg class="hiw-corner br" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 6v12m6-6H6"/></svg>
+        <div class="hiw-content">
+          <div class="hiw-icon-badge">01</div>
+          <div class="hiw-title">Discover</div>
+          <div class="hiw-desc">Stakeholder & user interviews, business goals, competitive analysis, analytics review, problem framing.</div>
+        </div>
+      </div>
+
+      <div class="hiw-card" data-colors="197,241,53|132,204,22">
+        <div class="hiw-canvas-wrap"><canvas></canvas><div class="hiw-fade"></div></div>
+        <svg class="hiw-corner tl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 6v12m6-6H6"/></svg>
+        <svg class="hiw-corner tr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 6v12m6-6H6"/></svg>
+        <svg class="hiw-corner bl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 6v12m6-6H6"/></svg>
+        <svg class="hiw-corner br" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 6v12m6-6H6"/></svg>
+        <div class="hiw-content">
+          <div class="hiw-icon-badge">02</div>
+          <div class="hiw-title">Define</div>
+          <div class="hiw-desc">Personas, user journeys, JTBD, information architecture, success metrics, prioritization.</div>
+        </div>
+      </div>
+
+      <div class="hiw-card" data-colors="167,139,250|124,58,237">
+        <div class="hiw-canvas-wrap"><canvas></canvas><div class="hiw-fade"></div></div>
+        <svg class="hiw-corner tl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 6v12m6-6H6"/></svg>
+        <svg class="hiw-corner tr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 6v12m6-6H6"/></svg>
+        <svg class="hiw-corner bl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 6v12m6-6H6"/></svg>
+        <svg class="hiw-corner br" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 6v12m6-6H6"/></svg>
+        <div class="hiw-content">
+          <div class="hiw-icon-badge">03</div>
+          <div class="hiw-title">Design</div>
+          <div class="hiw-desc">User flows, wireframes, visual exploration, components, design system, accessibility (WCAG).</div>
+        </div>
+      </div>
+
+      <div class="hiw-card" data-colors="236,72,153|232,121,249">
+        <div class="hiw-canvas-wrap"><canvas></canvas><div class="hiw-fade"></div></div>
+        <svg class="hiw-corner tl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 6v12m6-6H6"/></svg>
+        <svg class="hiw-corner tr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 6v12m6-6H6"/></svg>
+        <svg class="hiw-corner bl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 6v12m6-6H6"/></svg>
+        <svg class="hiw-corner br" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 6v12m6-6H6"/></svg>
+        <div class="hiw-content">
+          <div class="hiw-icon-badge">04</div>
+          <div class="hiw-title">Validate</div>
+          <div class="hiw-desc">Usability testing, prototype testing, feedback sessions, design QA, iterate on insights.</div>
+        </div>
+      </div>
+
+      <div class="hiw-card" data-colors="125,211,252|56,189,248">
+        <div class="hiw-canvas-wrap"><canvas></canvas><div class="hiw-fade"></div></div>
+        <svg class="hiw-corner tl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 6v12m6-6H6"/></svg>
+        <svg class="hiw-corner tr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 6v12m6-6H6"/></svg>
+        <svg class="hiw-corner bl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 6v12m6-6H6"/></svg>
+        <svg class="hiw-corner br" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 6v12m6-6H6"/></svg>
+        <div class="hiw-content">
+          <div class="hiw-icon-badge">05</div>
+          <div class="hiw-title">Build</div>
+          <div class="hiw-desc">Developer handoff, design tokens, component documentation, Figma Dev Mode, engineer collaboration.</div>
+        </div>
+      </div>
+
+      <div class="hiw-card" data-colors="249,115,22|251,191,36">
+        <div class="hiw-canvas-wrap"><canvas></canvas><div class="hiw-fade"></div></div>
+        <svg class="hiw-corner tl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 6v12m6-6H6"/></svg>
+        <svg class="hiw-corner tr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 6v12m6-6H6"/></svg>
+        <svg class="hiw-corner bl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 6v12m6-6H6"/></svg>
+        <svg class="hiw-corner br" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 6v12m6-6H6"/></svg>
+        <div class="hiw-content">
+          <div class="hiw-icon-badge">06</div>
+          <div class="hiw-title">Measure</div>
+          <div class="hiw-desc">Track KPIs, user feedback, analytics, A/B testing, continuous improvement.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="spec-row">
+      <div class="spec-label">Specializations</div>
+      <span class="spec-chip">Design Systems</span>
+      <span class="spec-chip">Accessibility (WCAG)</span>
+      <span class="spec-chip">AI-assisted UX</span>
+      <span class="spec-chip">Enterprise Products</span>
+      <span class="spec-chip">Developer Handoff</span>
+      <span class="spec-chip">Design Tokens</span>
+      <span class="spec-chip">Prototyping</span>
+    </div>
+  </div>
+</section>
+  
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-wrap reveal">
+    <div class="section-label">The Person</div>
+    <h2 class="section-title">Why <span class="hl">Sachin</span>?</h2>
+    <div class="about-grid">
+      <div>
+        <div class="about-text">
+          <p>I'm a UX Designer at <strong>Tata Consultancy Services</strong>, where I've spent 2.5+ years redesigning enterprise-scale products in the health insurance domain for <strong>Cigna Healthcare</strong> — a platform serving 100,000+ users.</p>
+          <p>What makes me different? I'm not just a pixel pusher. I think in <strong>systems</strong>, move in <strong>sprints</strong>, and speak the language of both users and engineers. My Figma files are developer-ready. My prototypes are stakeholder-ready. My metrics are business-ready.</p>
+          <p>I built and governed the <strong>Healthcare Design System</strong> from scratch, designed three end-to-end flows for a <strong>Pharmacy Management System</strong>, and designed a gym app that finally makes sense for Indian users (<strong>RepTrack</strong>).</p>
+          <p>Right now, I'm focused on solving problems in <strong>consumer fintech and enterprise UX</strong> — whether it's designing credit experiences for India's next generation of users or building scalable systems that improve productivity at enterprise scale.</p>
+        </div>
+      </div>
+      <div class="skills-wrap">
+        <div class="skill-row"><span class="skill-label">Figma</span><div class="skill-bar"><div class="skill-fill" style="width:95%"></div></div><span class="skill-pct">95%</span></div>
+        <div class="skill-row"><span class="skill-label">Design Systems</span><div class="skill-bar"><div class="skill-fill" style="width:90%;animation-delay:0.1s"></div></div><span class="skill-pct">90%</span></div>
+        <div class="skill-row"><span class="skill-label">UX Research</span><div class="skill-bar"><div class="skill-fill" style="width:85%;animation-delay:0.2s"></div></div><span class="skill-pct">85%</span></div>
+        <div class="skill-row"><span class="skill-label">Prototyping</span><div class="skill-bar"><div class="skill-fill" style="width:92%;animation-delay:0.3s"></div></div><span class="skill-pct">92%</span></div>
+        <div class="skill-row"><span class="skill-label">HTML/CSS</span><div class="skill-bar"><div class="skill-fill" style="width:75%;animation-delay:0.4s"></div></div><span class="skill-pct">75%</span></div>
+        <div class="skill-row"><span class="skill-label">AI Tools</span><div class="skill-bar"><div class="skill-fill" style="width:85%;animation-delay:0.6s"></div></div><span class="skill-pct">85%</span></div>
+        <div class="skill-row"><span class="skill-label">Jira / Confluence</span><div class="skill-bar"><div class="skill-fill" style="width:80%;animation-delay:0.7s"></div></div><span class="skill-pct">80%</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-inner reveal">
+    <div class="section-label" style="justify-content:center;">Contact</div>
+    <div class="contact-big">Let's build something<br><span class="hl">meaningful</span></div>
+    <p class="contact-sub">Open to full-time UX roles at product-focused companies.<br>Chennai-based. Available immediately.</p>
+    <a href="mailto:er_sachinkumarm@outlook.com" class="btn-primary" style="display:inline-flex;">Say Hello →</a>
+    <div class="contact-links">
+      <a href="https://linkedin.com/in/sachin1720" target="_blank"
+        style="color:var(--lime);text-decoration:none;border-bottom:1px solid rgba(197,241,53,0.3);">
+        LinkedIn
+      </a>
+     <a href="https://www.behance.net/sachinkumarm" target="_blank"
+       style="color:var(--lime);text-decoration:none;border-bottom:1px solid rgba(197,241,53,0.3);">
+       Behance
+     </a>
+      <a href="Sachin_Kumar_M_10.07.2026.pdf" download class="contact-link">
+        ↓ Resume PDF
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span>Sachin Kumar M — UX Designer</span>
+  <span>Crafted with <span>♥</span> in Chennai · 2026</span>
+</footer>
+
+<!-- VIDEO MODAL -->
+<div class="modal-bg" id="videoModal" onclick="closeModal(event)">
+  <button class="modal-close" onclick="closeModal()">✕</button>
+  <div class="modal-video">
+    <video id="modalVideo" controls style="width:100%;border-radius:16px;"></video>
+  </div>
+</div>
+
+<script>
+// Custom cursor
+const cursor = document.getElementById('cursor');
+const trail = document.getElementById('cursor-trail');
+let mx = 0, my = 0, tx = 0, ty = 0;
+document.addEventListener('mousemove', e => {
+  mx = e.clientX; my = e.clientY;
+  cursor.style.left = mx + 'px'; cursor.style.top = my + 'px';
+});
+function animTrail() {
+  tx += (mx - tx) * 0.15; ty += (my - ty) * 0.15;
+  trail.style.left = tx + 'px'; trail.style.top = ty + 'px';
+  requestAnimationFrame(animTrail);
+}
+animTrail();
+document.querySelectorAll('a,button,.video-card').forEach(el => {
+  el.addEventListener('mouseenter', () => { cursor.style.transform = 'translate(-50%,-50%) scale(2)'; trail.style.transform = 'translate(-50%,-50%) scale(0.5)'; });
+  el.addEventListener('mouseleave', () => { cursor.style.transform = 'translate(-50%,-50%) scale(1)'; trail.style.transform = 'translate(-50%,-50%) scale(1)'; });
+});
+
+// Tab switching
+function switchTab(id, el) {
+  document.querySelectorAll('.work-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.work-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  el.classList.add('active');
+}
+
+// Video modal
+function openModal(src) {
+  const modal = document.getElementById('videoModal');
+  const vid = document.getElementById('modalVideo');
+  vid.src = src; vid.play();
+  modal.classList.add('open');
+}
+function closeModal(e) {
+  if (!e || e.target === document.getElementById('videoModal') || e.currentTarget.classList.contains('modal-close')) {
+    document.getElementById('videoModal').classList.remove('open');
+    document.getElementById('modalVideo').pause();
+    document.getElementById('modalVideo').src = '';
+  }
+}
+
+// Scroll reveal
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting) { e.target.classList.add('visible'); } });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// Counter animation
+function animateCounters() {
+  document.querySelectorAll('.impact-num').forEach(el => {
+    const text = el.textContent;
+    const num = parseFloat(text);
+    if(isNaN(num)) return;
+    let start = 0; const end = num; const dur = 1500;
+    const step = timestamp => {
+      if(!start) start = timestamp;
+      const p = Math.min((timestamp - start) / dur, 1);
+      const ease = 1 - Math.pow(1 - p, 3);
+      el.textContent = Math.floor(ease * end) + (text.includes('%') ? '%' : '');
+      if(p < 1) requestAnimationFrame(step);
+      else el.textContent = text;
+    };
+    requestAnimationFrame(step);
+  });
+}
+
+// COMET CARD INTERACTION
+const card = document.querySelector('.comet-inner');
+
+if (card) {
+  card.addEventListener('mousemove', (e) => {
+    const rect = card.getBoundingClientRect();
+
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+
+    const rotateX = -(y - centerY) / 18;
+    const rotateY = (x - centerX) / 18;
+
+    card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.03)`;
+  });
+
+  card.addEventListener('mouseleave', () => {
+    card.style.transform = `rotateX(0deg) rotateY(0deg) scale(1)`;
+  });
+}
+const impactSection = document.getElementById('impact');
+const impactObserver = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      animateCounters();
+      impactObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.3 });
+if (impactSection) impactObserver.observe(impactSection);
+document.querySelectorAll('.ai-card').forEach(card => {
+  document.addEventListener('mousemove', e => {
+    const rect = card.getBoundingClientRect();
+    const isNear =
+      e.clientX > rect.left - 64 && e.clientX < rect.right + 64 &&
+      e.clientY > rect.top - 64 && e.clientY < rect.bottom + 64;
+    card.style.setProperty('--active', isNear ? '1' : '0');
+    if (isNear) {
+      const cx = rect.left + rect.width / 2;
+      const cy = rect.top + rect.height / 2;
+      const angle = Math.atan2(e.clientY - cy, e.clientX - cx) * 180 / Math.PI + 90;
+      card.style.setProperty('--start', angle);
+    }
+  });
+});
+// CANVAS REVEAL EFFECT (vanilla version of Aceternity's canvas-reveal-effect)
+document.querySelectorAll('.hiw-card').forEach(card => {
+  const canvas = card.querySelector('canvas');
+  const ctx = canvas.getContext('2d');
+  const colors = card.dataset.colors.split('|').map(c => c.split(',').map(Number));
+  let dots = [], raf = null, running = false;
+  function resize() {
+    canvas.width = card.clientWidth;
+    canvas.height = card.clientHeight;
+    const cols = Math.floor(canvas.width / 16);
+    const rows = Math.floor(canvas.height / 16);
+    dots = [];
+    for (let y = 0; y < rows; y++) {
+      for (let x = 0; x < cols; x++) {
+        dots.push({
+          x: x * 16 + 8, y: y * 16 + 8,
+          phase: Math.random() * Math.PI * 2,
+          speed: 0.5 + Math.random() * 1.5,
+          color: colors[Math.floor(Math.random() * colors.length)]
+        });
+      }
+    }
+  }
+  function draw(t) {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    dots.forEach(d => {
+      const o = (Math.sin(t * 0.002 * d.speed + d.phase) + 1) / 2;
+      ctx.beginPath();
+      ctx.arc(d.x, d.y, 1.8, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(${d.color[0]},${d.color[1]},${d.color[2]},${o * 0.85 + 0.1})`;
+      ctx.fill();
+    });
+    if (running) raf = requestAnimationFrame(draw);
+  }
+  card.addEventListener('mouseenter', () => {
+    resize();
+    card.classList.add('hovered');
+    running = true;
+    raf = requestAnimationFrame(draw);
+  });
+  card.addEventListener('mouseleave', () => {
+    running = false;
+    card.classList.remove('hovered');
+    cancelAnimationFrame(raf);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  });
+});
+</script>
+</body>
+</html>
